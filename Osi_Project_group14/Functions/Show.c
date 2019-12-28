@@ -4,7 +4,7 @@
 #include <conio.h>
 #include "Show.h"
 #include "DataManage.h"
-#include"functions.h"
+#include "functions.h"
 #define _CRT_SECURE_NO_WARNINGS
 
 // u headeru je vecina objasnjenja za funkcije
@@ -14,8 +14,8 @@ USER temp;
 
 void head(char* naslov)
 {
-    printf("/n****************************************************************************************************\n");		//50 komada (valjda)
-    printf("                                        %s\n");
+    printf("****************************************************************************************************\n");		//50 komada (valjda)
+    printf("                                        %s\n", naslov);
     printf("****************************************************************************************************\n");
 }
 
@@ -29,7 +29,7 @@ int errorUnreg()
     while(t)
     {
         printf("Pokusajte ponovo D/N: ");
-        c=getc();
+        c=getch();
         if(c=='D' || c=='d')
         {
             t=0;
@@ -43,21 +43,21 @@ int errorUnreg()
         else
             printf("Pogresan unos!\n");
     }
+    return 0;                                                           //stoji samo da bi izbjegao warning, ali nikada nece doci do toga
 }
 
-void errorWrong()
+int errorWrong()
 {
     char c;
     short t=1;                                                          //promjenjiva koja kontrolise while petlju
 
     printf("\n\nPogresna lozinka!\n");
 
-
     //dok god je unos neodgovarajuci, petlja se ponavlja
     while(t)
     {
         printf("Pokusajte ponovo D/N: ");
-        c=getc();
+        c=getch();
         if(c=='D' || c=='d')
         {
             t=0;
@@ -71,6 +71,7 @@ void errorWrong()
         else
             printf("Pogresan unos!\n");
     }
+    return 0;                                                           //stoji samo da bi izbjegao warning, ali nikada nece doci do toga
 }
 
 
@@ -117,7 +118,7 @@ void logInForm(char* user)
     head("Prijava");
 
     printf("Korisnicko ime: ");
-    gets(user);
+    scanf("%s",user);
     printf("Sifra: ");
 }
 
@@ -160,6 +161,8 @@ int userLogIn(char cityName[])
         else
             whileNotLoged = 0;
     }
+    if(i<1)
+        i = 0;
 
     free(user);
     free(password);
@@ -170,33 +173,41 @@ int userLogIn(char cityName[])
 void chooseOption(char cityName[])
 {
     int choice;
+    short choiceLoop = 0, isLoged;
 
-    showOptions(&choice);
 
-    while (choice < 1 || choice>4)
+    //choiceLoop nam omogucava da se vratimo na pocetni ekran
+    //ukoliko napustimo ekran za prijavu ili ekran za registraciju
+    while(!choiceLoop)
     {
         newPage(cityName);
-        printf("\n=== MOLIMO VAS DA IZABERETE NEKU OD POSTOJECIH OPCIJA ===\n\n");
         showOptions(&choice);
-    }
 
-    switch(choice)
-    {
-    case 1:
-    {
-        userLogIn(cityName);
-    }
-    break;
-        //case 2: registerLayout();
-    break;
-        //case 3: guestLogIn();
-    break;
-    default:
+        while (choice < 1 || choice>4)
+        {
+            newPage(cityName);
+            printf("\n=== MOLIMO VAS DA IZABERETE NEKU OD POSTOJECIH OPCIJA ===\n\n");
+            showOptions(&choice);
+        }
+
+        switch(choice)
+        {
+        case 1:
+        {
+            isLoged = userLogIn(cityName);
+            if(!isLoged) choiceLoop = 0;
+            //else showEvents
+        }
         break;
+            //case 2: registerLayout();
+        break;
+            //case 3: guestLogIn();
+        break;
+        default:
+            break;
+        }
     }
 
-
-    fflush(stdin);
+    fflush(stdin);                              //pojma nemam sta je ovo, ostalo od dejana
 
 }
-

@@ -1,6 +1,8 @@
-#pragma once
-#include<stdio.h>
+#ifndef FUNCTIONS_H_INCLUDED
+#define FUNCTIONS_H_INCLUDED
 
+#include<stdio.h>
+#include<stdlib.h>
 //funkcija koja upisuje ime grada u datoteku
 //funkcija prima datoteku u koju upisuje ime grada
 void writeCity(FILE*);
@@ -17,3 +19,5 @@ void isThereCity(char []);
 //pri otvaranju nove "stranice"
 //funkcija prima ime grada
 void newPage(char []);
+
+#endif
