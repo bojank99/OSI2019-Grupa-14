@@ -14,9 +14,9 @@ USER temp;
 
 void head(char* naslov)
 {
-    printf("/n====================================================================================================\n");		//50 komada (valjda)
+    printf("/n****************************************************************************************************\n");		//50 komada (valjda)
     printf("                                        %s\n");
-    printf("====================================================================================================\n");
+    printf("****************************************************************************************************\n");
 }
 
 int errorUnreg()
@@ -83,7 +83,7 @@ void showOptions(int* choice)
     scanf("%d", choice);
 }
 
-int userData(char* usrn,char* passw)
+int checkUserData(char* usrn,char* passw)
 {
     FILE* users;
     int id;
@@ -114,7 +114,6 @@ int userData(char* usrn,char* passw)
 void logInForm(char* user)
 {
 
-
     head("Prijava");
 
     printf("Korisnicko ime: ");
@@ -122,7 +121,7 @@ void logInForm(char* user)
     printf("Sifra: ");
 }
 
-int userLogIn()
+int userLogIn(char cityName[])
 {
     char* user = (char*)calloc(21, sizeof(char));
     char* password = (char*)calloc(21, sizeof(char));
@@ -135,6 +134,7 @@ int userLogIn()
     //ili se vratiti na pocetnu stranicu
     while(whileNotLoged)
     {
+        newPage(cityName);
         logInForm(user);
 
         //ovdje se pocinje unositi sifra
@@ -153,7 +153,7 @@ int userLogIn()
 
         //ovdje se provjerava da li je korisnik vec registrovan
 
-        if (!(i = userData(user, password)))
+        if (!(i = checkUserData(user, password)))
             whileNotLoged = errorUnreg();
         else if (i == -1)
             whileNotLoged = errorWrong();
@@ -184,8 +184,7 @@ void chooseOption(char cityName[])
     {
     case 1:
     {
-        newPage(cityName);
-        userLogIn();
+        userLogIn(cityName);
     }
     break;
         //case 2: registerLayout();

@@ -60,7 +60,7 @@ int loadEvent(EVENT* eve, FILE* eventFile) {
 
 void writeUser(USER* user,  FILE* userFile) {								//podrazumjevaju da su korisnici/dogadjaji konacno formirani
 	fprintf(userFile, "%s %s %s %s \n", user->userID, user->userName, user->password, user->type);
-}		
+}
 void writeEvent(EVENT* eve,  FILE* eventFile) {
 	fprintf(eventFile, "%s %s %s| %s| %s %s %d \n",eve->eventID, eve->user, eve->headline, eve->description, eve->date, eve->category, eve->finished);
 }
@@ -97,7 +97,7 @@ int deleteUser(char* userid) {												//NOTE: predpostavlja se da je fajl us
 			curr = curr->next;
 		}
 	}
-	
+
 	curr = first;
 	if (!first->next || !first) {
 		return 0;
