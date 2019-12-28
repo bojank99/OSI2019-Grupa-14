@@ -1,0 +1,31 @@
+# depslib dependency file v1.0
+1577535417 source:c:\users\jovicic-3\desktop\osi_project_group14\main.c
+	<stdio.h>
+	<stdlib.h>
+	"functions.h"
+	"Show.h"
+
+1577537355 c:\users\jovicic-3\desktop\osi_project_group14\functions.h
+	<stdio.h>
+
+1577535401 source:c:\users\jovicic-3\desktop\osi_project_group14\functions.c
+	"functions.h"
+
+1577527779 c:\users\jovicic-3\desktop\osi_project_group14\show.h
+
+1577535019 source:c:\users\jovicic-3\desktop\osi_project_group14\show.c
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	<conio.h>
+	"Show.h"
+	"DataManage.h"
+
+1577534944 c:\users\jovicic-3\desktop\osi_project_group14\datamanage.h
+	<stdio.h>
+
+1577381899 source:c:\users\jovicic-3\desktop\osi_project_group14\datamanage.c
+	"DataManage.h"
+	<stdlib.h>
+	<string.h>
+
