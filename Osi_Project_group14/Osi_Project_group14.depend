@@ -37,14 +37,14 @@
 1577544768 c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\datamanage.h
 	<stdio.h>
 
-1577624608 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\functions.c
+1577635719 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\functions.c
 	"functions.h"
 
 1577548039 c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\functions.h
 	<stdio.h>
 	<stdlib.h>
 
-1577628542 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\show.c
+1577635548 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\show.c
 	<stdio.h>
 	<string.h>
 	<stdlib.h>
@@ -53,7 +53,7 @@
 	"DataManage.h"
 	"functions.h"
 
-1577627748 c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\show.h
+1577633250 c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\show.h
 
 1577548986 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\main.c
 	<stdio.h>

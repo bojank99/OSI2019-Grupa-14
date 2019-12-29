@@ -33,6 +33,8 @@ int errorUnreg();
 //u suprotnom vrati 0
 int errorWrong();
 
+void readPassword(char*);
+
 void faq();					//FAQ (mozda, da ima kao opcija)
 
 

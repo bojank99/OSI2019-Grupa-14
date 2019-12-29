@@ -112,35 +112,9 @@ int checkUserData(char* usrn,char* passw)
     fclose(users);
 }
 
-void logInForm(char* user)
+void readPassword(char* password)
 {
-
-    head("Prijava");
-
-    printf("Korisnicko ime: ");
-    scanf("%s",user);
-    printf("Sifra: ");
-}
-
-int userLogIn(char cityName[])
-{
-    char* user = (char*)calloc(21, sizeof(char));
-    char* password = (char*)calloc(21, sizeof(char));
-    int i, whileNotLoged;
-    whileNotLoged = 1;
-
-
-    //u slucaju da nastane greska pri prijavljivanju
-    //korisnik moze ponovo pokusati da se prijavi ("whileNotLoged")
-    //ili se vratiti na pocetnu stranicu
-    while(whileNotLoged)
-    {
-        newPage(cityName);
-        logInForm(user);
-
-        //ovdje se pocinje unositi sifra
-
-        char c;
+    char c;
         int k;
         int complete=0;
         int backSpace=0;
@@ -176,6 +150,37 @@ int userLogIn(char cityName[])
             }
         }
         password[k] = '\0';
+}
+
+void logInForm(char* user)
+{
+
+    head("Prijava");
+
+    printf("Korisnicko ime: ");
+    scanf("%s",user);
+    printf("Sifra: ");
+}
+
+int userLogIn(char cityName[])
+{
+    char* user = (char*)calloc(21, sizeof(char));
+    char* password = (char*)calloc(21, sizeof(char));
+    int i, whileNotLoged;
+    whileNotLoged = 1;
+
+
+    //u slucaju da nastane greska pri prijavljivanju
+    //korisnik moze ponovo pokusati da se prijavi ("whileNotLoged")
+    //ili se vratiti na pocetnu stranicu
+    while(whileNotLoged)
+    {
+        newPage(cityName);
+        logInForm(user);
+
+        //ovdje se pocinje unositi sifra
+
+        readPassword(password);
 
         //ovdje se provjerava da li je korisnik vec registrovan
 
@@ -195,9 +200,52 @@ int userLogIn(char cityName[])
     return i;
 }
 
-void registerLayout(char citiName[])
+void registerLayout(char cityName[])
 {
+    newPage(cityName);
+    head("Registracija");
 
+    char ime[20];
+    char prezime[21];
+    char email[40];
+    char username[20];
+    char password[20];
+    char c;
+    short t=1;
+    FILE *fp;
+
+    printf("Ime: ");
+    scanf("%s", ime);
+    printf("Prezime: ");
+    scanf("%s", prezime);
+    printf("E-mail: ");
+    scanf("%s", email);
+    printf("Korisnicko ime: ");
+    scanf("%s", username);
+    printf("Sifra: ");
+    readPassword(password);
+    printf("\n");
+
+    fp=fopen("Data/Korisnicki_zahtjevi.txt","a");
+
+
+    while(t)
+    {
+    printf("Da li zelite da posaljete zahtijev (D/N): ");
+    c=getch();
+
+    if(c=='D' || c=='d')
+    {
+        if(fp!=NULL)
+        {
+            fprintf(fp,"%d,%s,%s,%s,%s,%s\n",0,username,password,email,ime,prezime);
+        }
+        t=0;
+    }
+    else if(c=='N' || c=='n') t=0;
+    else printf("Pogresan unos!\n");
+    }
+    return;
 }
 
 void chooseOption(char cityName[])
@@ -231,9 +279,9 @@ void chooseOption(char cityName[])
             //else showEvents
         }
         break;
-            //case 2: registerLayout();
+            case '2': registerLayout(cityName);
         break;
-            //case 3: guestLogIn();
+            //case '3': guestLogIn();
         break;
         default:
             break;

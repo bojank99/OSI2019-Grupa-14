@@ -20,7 +20,7 @@ void isThereCity(char cityName[20])
     int c;                                  //promjenjiva koja ocita prvu vrijednost iz datoteke
     FILE *fp;
 
-    fp=fopen("Data\\Ime_Grada.txt","r+");
+    fp=fopen("Data/Ime_Grada.txt","r+");
 
     if(fp!=NULL)
         c=fgetc(fp);
