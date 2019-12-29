@@ -145,10 +145,10 @@ int userLogIn(char cityName[])
         do
         {
             password[p++]=getch();
-            if(password[p]!='\r')
+            if(password[p-1]!='\r')
                 printf("*");
         }
-        while(password[p-1]!='\r'  || p==21);
+        while(password[p-1]!='\r');
 
         password[p-1]='\0';
 
