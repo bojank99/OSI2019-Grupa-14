@@ -23,6 +23,9 @@ void guestLayout();
 void registerLayout();		//prikaz za registraciju i to
 
 
+void passBackspace(int* k, char* password);     //pomocna za brisanje chara pri unosu passworda
+
+
 //Ispisuje da ne postoji korisnik sa datim imenom
 //ako korisnik hoce da pokusa ponovo vrati 1
 //u suprotnom vrati 0

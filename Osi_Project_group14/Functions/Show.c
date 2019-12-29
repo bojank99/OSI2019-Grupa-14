@@ -84,6 +84,22 @@ void showOptions(int* choice)
     scanf("%d", choice);
 }
 
+void passBackspace(int* k, char* password) {
+	printf("\r");                                           //vracanje na pocetak linije
+	printf("Sifra: ");
+	for (int i = 0; i < *k - 1; printf("*"), i++);          //Ispisivanje jedne manje zvjezdice
+	printf(" ");                                            //Blanko da prekrije zadnju
+	printf("\r");
+	printf("Sifra: ");
+	for (int i = 0; i < *k - 1; printf("*"), i++);
+	if (*k != 0) { (*k) -= 2; }
+	else {                                                  //ako nema sta brisati
+		password[0] = '\0'; (*k)--; printf("\rSifra: ");
+	}
+            //Uglavnom, dva puta pravi ispis i mijenja string password
+
+}
+
 int checkUserData(char* usrn,char* passw)
 {
     FILE* users;
@@ -126,6 +142,7 @@ int userLogIn(char cityName[])
 {
     char* user = (char*)calloc(21, sizeof(char));
     char* password = (char*)calloc(21, sizeof(char));
+    char c;
     int i, whileNotLoged;
     whileNotLoged = 1;
 
@@ -142,15 +159,17 @@ int userLogIn(char cityName[])
 
         int p=0;
 
-        do
-        {
-            password[p++]=getch();
-            if(password[p-1]!='\r')
-                printf("*");
-        }
-        while(password[p-1]!='\r');
+        for (p = 0; p < 19; p++)
+		{
+			c = _getch();
 
-        password[p-1]='\0';
+			if (c == 13) { break; }
+			else if (c == 010) { passBackspace(&p, password); continue; }
+			password[p] = c;
+			c = '*';
+			printf("%c", c);
+		}
+		password[p] = '\0';
 
         //ovdje se provjerava da li je korisnik vec registrovan
 

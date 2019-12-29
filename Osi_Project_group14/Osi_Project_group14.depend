@@ -61,3 +61,26 @@
 	"Functions/functions.h"
 	"Functions/Show.h"
 
+1577623518 source:c:\users\pc\desktop\osip\osi_project_group14\functions\datamanage.c
+	"DataManage.h"
+	<stdlib.h>
+	<string.h>
+
+1577623518 c:\users\pc\desktop\osip\osi_project_group14\functions\datamanage.h
+	<stdio.h>
+
+1577623518 source:c:\users\pc\desktop\osip\osi_project_group14\functions\functions.c
+	"functions.h"
+
+1577623518 c:\users\pc\desktop\osip\osi_project_group14\functions\functions.h
+	<stdio.h>
+	<stdlib.h>
+
+1577623518 source:c:\users\pc\desktop\osip\osi_project_group14\main.c
+	<stdio.h>
+	<stdlib.h>
+	"Functions/functions.h"
+	"Functions/Show.h"
+
+1577623518 c:\users\pc\desktop\osip\osi_project_group14\functions\show.h
+
