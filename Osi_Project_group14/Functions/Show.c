@@ -115,41 +115,41 @@ int checkUserData(char* usrn,char* passw)
 void readPassword(char* password)
 {
     char c;
-        int k;
-        int complete=0;
-        int backSpace=0;
+    int k;
+    int complete=0;
+    int backSpace=0;
 
-        for (k = 0; !complete ; backSpace=0)
+    for (k = 0; !complete ; backSpace=0)
+    {
+        c = getch();
+        if (c == 13)
         {
-            c = getch();
-            if (c == 13)
+            complete=1;
+            backSpace=1;
+        }
+        else if (c == 010)
+        {
+            if(k!=0)
             {
-                complete=1;
+                printf("\b \b");
+                password[k]=0;
+                k--;
                 backSpace=1;
             }
-            else if (c == 010)
+            else
             {
-                if(k!=0)
-                {
-                    printf("\b \b");
-                    password[k]=0;
-                    k--;
-                    backSpace=1;
-                }
-                else
-                {
-                    backSpace=1;
-                }
-            }
-            if(!backSpace && k<20)
-            {
-                password[k] = c;
-                c = '*';
-                printf("%c", c);
-                k++;
+                backSpace=1;
             }
         }
-        password[k] = '\0';
+        if(!backSpace && k<20)
+        {
+            password[k] = c;
+            c = '*';
+            printf("%c", c);
+            k++;
+        }
+    }
+    password[k] = '\0';
 }
 
 void logInForm(char* user)
@@ -231,20 +231,28 @@ void registerLayout(char cityName[])
 
     while(t)
     {
-    printf("Da li zelite da posaljete zahtijev (D/N): ");
-    c=getch();
+        printf("Da li zelite da posaljete zahtijev (D/N): ");
+        c=getch();
 
-    if(c=='D' || c=='d')
-    {
-        if(fp!=NULL)
+        if(c=='D' || c=='d')
         {
-            fprintf(fp,"%d,%s,%s,%s,%s,%s\n",0,username,password,email,ime,prezime);
+            if(fp!=NULL)
+            {
+                fprintf(fp,"%d,%s,%s,%s,%s,%s\n",0,username,password,email,ime,prezime);
+            }
+            t=0;
+            printf("VAS ZAHTIJEV JE POSLAN\nKADA NALOG BUDE ODOBREN BICETE OBAVJESTENI\n");
+            printf("\nZa izlaz pritisnite neko slovo na tastaturi");
+            getch();
+
         }
-        t=0;
+        else if(c=='N' || c=='n')
+            t=0;
+        else
+            printf("Pogresan unos!\n");
     }
-    else if(c=='N' || c=='n') t=0;
-    else printf("Pogresan unos!\n");
-    }
+
+    fclose(fp);
     return;
 }
 
@@ -279,10 +287,11 @@ void chooseOption(char cityName[])
             //else showEvents
         }
         break;
-            case '2': registerLayout(cityName);
-        break;
+        case '2':
+            registerLayout(cityName);
+            break;
             //case '3': guestLogIn();
-        break;
+            break;
         default:
             break;
         }
