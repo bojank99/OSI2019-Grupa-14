@@ -40,7 +40,14 @@ void isThereCity(char cityName[20])
 
 void newPage(char cityName [])
 {
-    system("cls");
+    #if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
+        system("clear");
+    #endif
+
+    #if defined(_WIN32) || defined(_WIN64)
+        system("cls");
+    #endif
+    //system("cls");
     printf("=== Grad %s ===\n",cityName);
 }
 
