@@ -31,6 +31,21 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="Functions/DataManage.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Functions/DataManage.h" />
+		<Unit filename="Functions/Functions1.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="Functions/Show.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Functions/Show.h" />
+		<Unit filename="Functions/functions.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Functions/functions.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
