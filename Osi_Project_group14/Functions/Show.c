@@ -140,35 +140,42 @@ int userLogIn(char cityName[])
 
         //ovdje se pocinje unositi sifra
 
-        int p=0;
         char c;
-        do
+        int k;
+        int complete=0;
+        int backSpace=0;
+
+        for (k = 0; !complete ; backSpace=0)
         {
-            c=getch();
-            if(p<20)
+            c = getch();
+            if (c == 13)
             {
-                password[p++]=c;
-                if(password[p-1]!='\r' && password[p-1]!='\b')
-                {
-                    printf("*");
-                }
-                if(password[p-1]=='\b' && p>=1)
+                complete=1;
+                backSpace=1;
+            }
+            else if (c == 010)
+            {
+                if(k!=0)
                 {
                     printf("\b \b");
-                    password[p=p-2]='\0';
+                    password[k]=0;
+                    k--;
+                    backSpace=1;
+                }
+                else
+                {
+                    backSpace=1;
                 }
             }
-            else if(c=='\b')
+            if(!backSpace && k<20)
             {
-                printf("\b \b");
-                password[p--]='\0';
+                password[k] = c;
+                c = '*';
+                printf("%c", c);
+                k++;
             }
-            else if(c=='\r')
-                password[p++]=c;
-
         }
-        while(password[p-1]!='\r');
-        password[p-1]='\0';
+        password[k] = '\0';
 
         //ovdje se provjerava da li je korisnik vec registrovan
 
@@ -207,12 +214,12 @@ void chooseOption(char cityName[])
         showOptions(&choice);
 
         if(choice!='\n')
-        while (choice < '1' || choice>'4')
-        {
-            newPage(cityName);
-            printf("\n=== MOLIMO VAS DA IZABERETE NEKU OD POSTOJECIH OPCIJA ===\n\n");
-            showOptions(&choice);
-        }
+            while (choice < '1' || choice>'4')
+            {
+                newPage(cityName);
+                printf("\n=== MOLIMO VAS DA IZABERETE NEKU OD POSTOJECIH OPCIJA ===\n\n");
+                showOptions(&choice);
+            }
 
         switch(choice)
         {
