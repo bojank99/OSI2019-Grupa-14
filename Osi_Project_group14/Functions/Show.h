@@ -5,7 +5,7 @@
 
 
 void head(char*);				//kao neki naslov
-void showOptions(int*);     	// za prikaz opcija na pocetku i izbor opcije
+void showOptions(char*);     	// za prikaz opcija na pocetku i izbor opcije
 void chooseOption(char []);			//izbor opcije na meniju na pocetku i kontrola greske pri unosu
 
 int checkUserData(char*, char*);			// za provjeru unesenih podataka u users.txt
@@ -20,7 +20,7 @@ void guestLogIn();			// treba da generise random guest usrname (npr guest1056) i
 void adminLayout();			//prikazi za razlicite tipove korisnika (guest je neregistrovan)
 void userLayout();
 void guestLayout();
-void registerLayout();		//prikaz za registraciju i to
+void registerLayout(char[]);		//prikaz za registraciju i to
 
 
 //Ispisuje da ne postoji korisnik sa datim imenom

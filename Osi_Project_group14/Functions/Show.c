@@ -75,13 +75,13 @@ int errorWrong()
 }
 
 
-void showOptions(int* choice)
+void showOptions(char* choice)
 {
     printf("1) Prijavite se\n");
     printf("2) Registrujte se\n");
     printf("3) Nastavi kao gost\n");
     printf("Unos: ");
-    scanf("%d", choice);
+    scanf("%c",choice);
 }
 
 int checkUserData(char* usrn,char* passw)
@@ -141,15 +141,33 @@ int userLogIn(char cityName[])
         //ovdje se pocinje unositi sifra
 
         int p=0;
-
+        char c;
         do
         {
-            password[p++]=getch();
-            if(password[p-1]!='\r')
-                printf("*");
+            c=getch();
+            if(p<20)
+            {
+                password[p++]=c;
+                if(password[p-1]!='\r' && password[p-1]!='\b')
+                {
+                    printf("*");
+                }
+                if(password[p-1]=='\b' && p>=1)
+                {
+                    printf("\b \b");
+                    password[p=p-2]='\0';
+                }
+            }
+            else if(c=='\b')
+            {
+                printf("\b \b");
+                password[p--]='\0';
+            }
+            else if(c=='\r')
+                password[p++]=c;
+
         }
         while(password[p-1]!='\r');
-
         password[p-1]='\0';
 
         //ovdje se provjerava da li je korisnik vec registrovan
@@ -170,9 +188,13 @@ int userLogIn(char cityName[])
     return i;
 }
 
+void registerLayout(char citiName[])
+{
+
+}
+
 void chooseOption(char cityName[])
 {
-    int choice;
     short choiceLoop = 0, isLoged;
 
 
@@ -180,10 +202,12 @@ void chooseOption(char cityName[])
     //ukoliko napustimo ekran za prijavu ili ekran za registraciju
     while(!choiceLoop)
     {
+        char choice;
         newPage(cityName);
         showOptions(&choice);
 
-        while (choice < 1 || choice>4)
+        if(choice!='\n')
+        while (choice < '1' || choice>'4')
         {
             newPage(cityName);
             printf("\n=== MOLIMO VAS DA IZABERETE NEKU OD POSTOJECIH OPCIJA ===\n\n");
@@ -192,10 +216,11 @@ void chooseOption(char cityName[])
 
         switch(choice)
         {
-        case 1:
+        case '1':
         {
             isLoged = userLogIn(cityName);
-            if(!isLoged) choiceLoop = 0;
+            if(!isLoged)
+                choiceLoop = 0;
             //else showEvents
         }
         break;
