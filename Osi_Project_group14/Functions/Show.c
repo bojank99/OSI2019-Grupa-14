@@ -205,14 +205,17 @@ void registerLayout(char cityName[])
     newPage(cityName);
     head("Registracija");
 
+    USER forReading;
+    createUser(&forReading);
     char ime[20];
     char prezime[21];
     char email[40];
     char username[20];
     char password[20];
     char c;
-    short t=1;
-    FILE *fp;
+    short t=1,find, loop=1;                                 //t je loop, za potvrdu slanja registracije, find pronalazi korisnicko ime, loop je loop u slucaju da postoji korisnicko ime
+    int id;
+    FILE *inputRequest, *readFile;
 
     printf("Ime: ");
     scanf("%s", ime);
@@ -220,13 +223,39 @@ void registerLayout(char cityName[])
     scanf("%s", prezime);
     printf("E-mail: ");
     scanf("%s", email);
-    printf("Korisnicko ime: ");
-    scanf("%s", username);
+
+    readFile=fopen("Data/Users.txt","r");
+
+    while(loop)
+    {
+        if(readFile!=NULL)
+        {
+            find = 0;
+            printf("Korisnicko ime: ");
+            scanf("%s", username);
+
+            rewind(readFile);
+            getId(&id,readFile);
+
+            while(!find && loadUser(&forReading,readFile))
+                if(!strcmp(username,forReading.userName))
+                {
+                    printf("\nPostoji korisnik sa istim korisnickim imenom\n");
+                    printf("Molimo vas unesite drugo korisnicko ime\n\n");
+                    find = 1;
+                }
+            if(!find)
+                loop=0;
+        }
+    }
+    fclose(readFile);
+    free(&forReading);
+
     printf("Sifra: ");
     readPassword(password);
     printf("\n");
 
-    fp=fopen("Data/Korisnicki_zahtjevi.txt","a");
+    inputRequest=fopen("Data/Korisnicki_zahtjevi.txt","a");
 
 
     while(t)
@@ -236,9 +265,9 @@ void registerLayout(char cityName[])
 
         if(c=='D' || c=='d')
         {
-            if(fp!=NULL)
+            if(inputRequest!=NULL)
             {
-                fprintf(fp,"%d,%s,%s,%s,%s,%s\n",0,username,password,email,ime,prezime);
+                fprintf(inputRequest,"%d,%s,%s,%s,%s,%s\n",0,username,password,email,ime,prezime);
             }
             t=0;
             printf("VAS ZAHTIJEV JE POSLAN\nKADA NALOG BUDE ODOBREN BICETE OBAVJESTENI\n");
@@ -252,7 +281,7 @@ void registerLayout(char cityName[])
             printf("Pogresan unos!\n");
     }
 
-    fclose(fp);
+    fclose(inputRequest);
     return;
 }
 
