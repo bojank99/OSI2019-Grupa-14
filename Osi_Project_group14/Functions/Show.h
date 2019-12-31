@@ -33,6 +33,9 @@ int errorUnreg();
 //u suprotnom vrati 0
 int errorWrong();
 
+//kao sto sam naziv kaze
+//ucitava sifru ali u formatiranom obliku
+//prima string
 void readPassword(char*);
 
 void faq();					//FAQ (mozda, da ima kao opcija)

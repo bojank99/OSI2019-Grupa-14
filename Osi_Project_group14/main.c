@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Functions/functions.h"
-#include "Functions/Show.h"
+
 
 
 int main()

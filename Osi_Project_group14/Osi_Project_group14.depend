@@ -44,7 +44,7 @@
 	<stdio.h>
 	<stdlib.h>
 
-1577824967 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\show.c
+1577826926 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\show.c
 	<stdio.h>
 	<string.h>
 	<stdlib.h>
@@ -53,13 +53,12 @@
 	"DataManage.h"
 	"functions.h"
 
-1577633250 c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\show.h
+1577826644 c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\show.h
 
-1577548986 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\main.c
+1577825549 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\main.c
 	<stdio.h>
 	<stdlib.h>
 	"Functions/functions.h"
-	"Functions/Show.h"
 
 1577623518 source:c:\users\pc\desktop\osip\osi_project_group14\functions\datamanage.c
 	"DataManage.h"

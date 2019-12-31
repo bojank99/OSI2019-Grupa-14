@@ -141,6 +141,7 @@ void readPassword(char* password)
                 backSpace=1;
             }
         }
+        //sifra je ogranicena na 20 karaktera
         if(!backSpace && k<20)
         {
             password[k] = c;
@@ -226,6 +227,7 @@ void registerLayout(char cityName[])
 
     readFile=fopen("Data/Users.txt","r");
 
+    //ovaj loop ce se ponavljati dok god postoji korisnika sa istim korisnickim imenom
     while(loop)
     {
         if(readFile!=NULL)
@@ -237,6 +239,7 @@ void registerLayout(char cityName[])
             rewind(readFile);
             getId(&id,readFile);
 
+            //loop staje kada nadje isto korisnicko ime ili kad dodje do kraja fajla
             while(!find && loadUser(&forReading,readFile))
                 if(!strcmp(username,forReading.userName))
                 {
@@ -249,7 +252,6 @@ void registerLayout(char cityName[])
         }
     }
     fclose(readFile);
-    free(&forReading);
 
     printf("Sifra: ");
     readPassword(password);
@@ -258,6 +260,7 @@ void registerLayout(char cityName[])
     inputRequest=fopen("Data/Korisnicki_zahtjevi.txt","a");
 
 
+    //loop traje dok god je unos za slanje zahtjeva nepravilan
     while(t)
     {
         printf("Da li zelite da posaljete zahtijev (D/N): ");
