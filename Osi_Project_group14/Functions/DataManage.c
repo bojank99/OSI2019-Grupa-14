@@ -193,3 +193,92 @@ void getId(int* id,FILE* opFile)
 	rewind(opFile);
 	fscanf(opFile, "%d ", id);
 }
+
+
+
+
+void makeDatum(const char *datum, int arr[3]){
+    int i=0, j=0, k=0;
+    char temp[5]={0};
+    while(datum[i]){
+        if(datum[i]!='.')
+            temp[j++]=datum[i];
+        else{
+            temp[j]=0;
+            arr[k++]=atoi(temp);
+            j=0;
+        }
+        i++;
+    }
+}
+
+int compareDatum (const char* datum1, const char* datum2){
+    int arr1[3], arr2[3];
+    makeDatum(datum1, arr1); makeDatum(datum2, arr2);
+    return arr1[2]<arr2[2] ? -1 :
+        (arr1[2]>arr2[2] ? 1 :
+            (arr1[1]<arr2[1] ? -1 :
+                (arr1[1]>arr2[1] ? 1:
+                    (arr1[0]<arr2[0] ? -1 :
+                        (arr1[0]>arr2[0] ? 1 : 0)))));
+}
+
+void printInIndex(INDEX *arr, INDEX *data, int n, const char* string, int (*compare)(const char*, const char*)){
+    int i, flag=1;  // flag - promjenljiva koja sluzi za provjeru da li se obradio dogadjaj koji je poslat
+    FILE *fp=fopen(string, "w");
+    if(fp!=NULL){
+        if(n==0){  // ako je datoteka bila prazna
+            fprintf(fp, "%s %s %d\n", data->key, data->eventID, data->position);  // upis u datoteku
+            flag=0; // oznacimo da je obradjen dati element
+        }
+        else
+            for(i=0; i<n; i++) // ako datoteka nije bila prazna prodjemo kroz sve elemente koji su bili u datoteci
+                if(!strcmp(data->eventID, arr[i].eventID)) continue;  // brisanje --> kako je ID jedinstven za sve dogadjaje, preskocicemo upis onog elementa koji ima isti ID
+                else if((*compare)(data->key, arr[i].key)<=0 && flag && data->position){  // ako je element koji dodajemo 'manji ili jednak' od elementa koji je bio u datoteci
+                    fprintf(fp, "%s %s %d\n", data->key, data->eventID, data->position);
+                    fprintf(fp, "%s %s %d\n", arr[i].key, arr[i].eventID, arr[i].position);
+                    flag=0;
+                }
+                else fprintf(fp, "%s %s %d\n", arr[i].key, arr[i].eventID, arr[i].position);  // ako je element koji dodajemo 'veci' od elemenata koji su bili u datoteci, samo prepisemo te elemente
+        if(flag && data->position) fprintf(fp, "%s %s %d\n", data->key, data->eventID, data->position);  // ako element koji dodajemo nije upisan u datoteku, upisemo ga
+        fclose(fp);
+    }
+    else printf("ERROR!");
+    free(arr);
+}
+
+INDEX* readFromIndex(int* n, const char* string){
+     INDEX *arr=NULL;
+     FILE *fp=fopen(string, "r");
+     INDEX temp={0};
+     int u=20, pom;
+     if(fp!=NULL){
+        arr=(INDEX*)calloc(u, sizeof(INDEX));
+        while((pom=fscanf(fp, "%s %s %d\n", temp.key, temp.eventID, &temp.position))==3){
+            arr[(*n)++]=temp;
+            if(*n==u) arr=(INDEX *)realloc(arr, (u*=2)*sizeof(INDEX));
+        }
+        arr=(INDEX *)realloc(arr, (*n)*sizeof(INDEX));
+        fclose(fp);
+    }
+    else printf("ERROR!");
+    return arr;
+}
+
+void sort (EVENT *event, int position){
+    INDEX *data=(INDEX*)calloc(1, sizeof(INDEX)), *arr=NULL; // alociramo memoriju za novi element indeksne datoteke i definisemo pokazivac na niz elemenata koji se nalaze u indeksnoj datoteci
+    int n=0;  // n - broj elemenata indekse datoteke
+
+    strcpy(data->eventID, event->eventID);
+    strcpy(data->key, event->datum);
+    data->position=position;
+    //upisemo podatke u data, koji predstavlja element indekse datoteke
+    arr=readFromIndex(&n, "datum.txt");  //iscitavanje elementa iz datoteke
+    printInIndex(arr, data, n , "datum.txt", &compareDatum);  // upis elementa u datoteku
+
+    arr=NULL; n=0;
+    strcpy(data->key, event->category);  // promijenimo kljuc za novu indeksnu datoteku
+    arr=readFromIndex(&n, "category.txt");
+    printInIndex(arr, data, n, "category.txt", &strcmp);
+    free(data);
+}
