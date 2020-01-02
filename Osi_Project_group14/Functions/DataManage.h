@@ -27,6 +27,11 @@ typedef struct EventTab {				//mozda korisiti za prikaz
 	USER* current;							//trenutno ulogovan user
 }EventTab;
 
+typedef struct Index{  // Struktura za rad sa indeksnim datoteakama
+    char eventID[15], key[15];
+    int position;
+}INDEX;
+
 void createUser(USER*);					//pomocne funkcije za inicijalizovanje
 void createEvent(EVENT*);
 
@@ -47,4 +52,23 @@ void freeEvent(EVENT*);
 
 void getId(int*,FILE*);
 
+
+// Funkcija koja od datuma, koji je string, pravi cjelobrojni niz od tri elementa koji predstavljaju godinu, mjesec i dan
+void makeDatum(const char*, int[]);
+
+// Funkcija koja poredi da datuma, predpostavlja se da je datum u obliku "dd.mm.gggg."
+int compareDatum (const char*, const char*);
+
+//Funkcija koja upisuje sortirane podatke u indeksnu datoteku, prilikom dodavanja novog dogadjaja ili prilikom brisanja dogadjaja
+//Prilikom upisa dodaje novi element na pocetak niza elemenata koji imaju isti kljuc
+//Funkcija prima niz elementa koji su bili u datoteci, novi element koji se dodaje, naziv datoteke u koju se upisuje i pokazivac na funkciju koja poredi dva kljuca
+void printInIndex(INDEX*, INDEX*, int, const char*, int (*compare)(const char*, const char*));
+
+//Funkcija koja iscitava sve elemente iz datoteke
+//Funkcija prima pokazivac na broj elemenata u datoteci i naziv datoteke, a pokazivac na niz elemenata u datoteci
+INDEX* readFromIndex(int*, const char*);
+
+//Funkcija koju pozivamo da bismo sortirali sve indeksne datoteke prilikom dodavanja ili brisanja elementa
+//Funkcija prima pokazivac na dogadjaj koji dodajemo i poziciju tog dogadjaja u glavnoj datoteci (ako je pozicija 0, znaci da brisemo taj element iz datoteke)
+void sort (EVENT*, int);
 
