@@ -60,26 +60,35 @@
 	<stdlib.h>
 	"Functions/functions.h"
 
-1577623518 source:c:\users\pc\desktop\osip\osi_project_group14\functions\datamanage.c
+1577923367 source:c:\users\pc\desktop\osip\osi_project_group14\functions\datamanage.c
 	"DataManage.h"
 	<stdlib.h>
 	<string.h>
 
-1577623518 c:\users\pc\desktop\osip\osi_project_group14\functions\datamanage.h
+1577921095 c:\users\pc\desktop\osip\osi_project_group14\functions\datamanage.h
 	<stdio.h>
 
-1577623518 source:c:\users\pc\desktop\osip\osi_project_group14\functions\functions.c
+1577658427 source:c:\users\pc\desktop\osip\osi_project_group14\functions\functions.c
 	"functions.h"
 
 1577623518 c:\users\pc\desktop\osip\osi_project_group14\functions\functions.h
 	<stdio.h>
 	<stdlib.h>
 
-1577623518 source:c:\users\pc\desktop\osip\osi_project_group14\main.c
+1577922303 source:c:\users\pc\desktop\osip\osi_project_group14\main.c
 	<stdio.h>
 	<stdlib.h>
 	"Functions/functions.h"
-	"Functions/Show.h"
+	"Functions/DataManage.h"
 
-1577623518 c:\users\pc\desktop\osip\osi_project_group14\functions\show.h
+1577900442 c:\users\pc\desktop\osip\osi_project_group14\functions\show.h
+
+1577900442 source:c:\users\pc\desktop\osip\osi_project_group14\functions\show.c
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	<conio.h>
+	"Show.h"
+	"DataManage.h"
+	"functions.h"
 

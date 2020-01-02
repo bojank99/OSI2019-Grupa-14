@@ -270,7 +270,7 @@ void registerLayout(char cityName[])
         {
             if(inputRequest!=NULL)
             {
-                fprintf(inputRequest,"%d,%s,%s,%s,%s,%s\n",0,username,password,email,ime,prezime);
+                fprintf(inputRequest,"%s %s %s %s %s\n",username,password,email,ime,prezime);
             }
             t=0;
             printf("VAS ZAHTIJEV JE POSLAN\nKADA NALOG BUDE ODOBREN BICETE OBAVJESTENI\n");
