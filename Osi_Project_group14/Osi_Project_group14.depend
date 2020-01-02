@@ -83,3 +83,32 @@
 
 1577623518 c:\users\pc\desktop\osip\osi_project_group14\functions\show.h
 
+1577983770 source:c:\users\dell.desktop-ra8skkt.000\desktop\osi2019-grupa-14\osi_project_group14\functions\functions.c
+	"functions.h"
+
+1577983770 c:\users\dell.desktop-ra8skkt.000\desktop\osi2019-grupa-14\osi_project_group14\functions\functions.h
+	<stdio.h>
+	<stdlib.h>
+
+1577983770 source:c:\users\dell.desktop-ra8skkt.000\desktop\osi2019-grupa-14\osi_project_group14\functions\show.c
+	<string.h>
+	<conio.h>
+	"Show.h"
+	"DataManage.h"
+	"functions.h"
+
+1577983770 c:\users\dell.desktop-ra8skkt.000\desktop\osi2019-grupa-14\osi_project_group14\functions\show.h
+
+1577984254 c:\users\dell.desktop-ra8skkt.000\desktop\osi2019-grupa-14\osi_project_group14\functions\datamanage.h
+	<stdio.h>
+
+1577983770 source:c:\users\dell.desktop-ra8skkt.000\desktop\osi2019-grupa-14\osi_project_group14\main.c
+	<stdio.h>
+	<stdlib.h>
+	"Functions/functions.h"
+
+1577984700 source:c:\users\dell.desktop-ra8skkt.000\desktop\osi2019-grupa-14\osi_project_group14\functions\datamanage.c
+	"DataManage.h"
+	<stdlib.h>
+	<string.h>
+
