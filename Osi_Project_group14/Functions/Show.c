@@ -1,10 +1,9 @@
-
 #include <string.h>
-
 #include <conio.h>
 #include "Show.h"
 #include "DataManage.h"
 #include "functions.h"
+#include "MainMenu.h"
 #define _CRT_SECURE_NO_WARNINGS
 
 // u headeru je vecina objasnjenja za funkcije
@@ -291,6 +290,8 @@ void registerLayout(char cityName[])
 void chooseOption(char cityName[])
 {
     short choiceLoop = 0, isLoged;
+    char userName[21];
+    char type[7];
 
 
     //choiceLoop nam omogucava da se vratimo na pocetni ekran
@@ -313,10 +314,10 @@ void chooseOption(char cityName[])
         {
         case '1':
         {
-            isLoged = userLogIn(cityName);
+            isLoged = userLogIn(cityName, );
             if(!isLoged)
                 choiceLoop = 0;
-            //else showEvents
+//            else showMainMenu();
         }
         break;
         case '2':

@@ -17,9 +17,7 @@ void logInForm(char*);	//obicna forma za prijavljivanje
 int userLogIn(char[]);
 void guestLogIn();			// treba da generise random guest usrname (npr guest1056) i samo prikazuje dogadjaje
 
-void adminLayout();			//prikazi za razlicite tipove korisnika (guest je neregistrovan)
-void userLayout();
-void guestLayout();
+
 void registerLayout(char[]);		//prikaz za registraciju i to
 
 
