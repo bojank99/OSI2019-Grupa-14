@@ -112,3 +112,32 @@
 	<stdlib.h>
 	<string.h>
 
+1578077479 source:c:\users\ivan\desktop\14\osi_project_group14\functions\datamanage.c
+	"DataManage.h"
+	<stdlib.h>
+	<string.h>
+
+1578077479 c:\users\ivan\desktop\14\osi_project_group14\functions\datamanage.h
+	<stdio.h>
+
+1577976521 source:c:\users\ivan\desktop\14\osi_project_group14\functions\functions.c
+	"functions.h"
+
+1577976521 c:\users\ivan\desktop\14\osi_project_group14\functions\functions.h
+	<stdio.h>
+	<stdlib.h>
+
+1577992601 source:c:\users\ivan\desktop\14\osi_project_group14\functions\show.c
+	<string.h>
+	<conio.h>
+	"Show.h"
+	"DataManage.h"
+	"functions.h"
+
+1577976521 c:\users\ivan\desktop\14\osi_project_group14\functions\show.h
+
+1577976521 source:c:\users\ivan\desktop\14\osi_project_group14\main.c
+	<stdio.h>
+	<stdlib.h>
+	"Functions/functions.h"
+
