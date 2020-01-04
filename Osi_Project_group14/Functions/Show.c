@@ -79,6 +79,7 @@ void showOptions(char* choice)
     printf("1) Prijavite se\n");
     printf("2) Registrujte se\n");
     printf("3) Nastavi kao gost\n");
+    printf("4) Izadji\n");
     printf("Unos: ");
     scanf("%c",choice);
 }
@@ -335,6 +336,7 @@ void chooseOption(char cityName[])
                 showMainMenu(cityName,"guest","Gost1");
             };
         break;
+        case '4': return;
         default:
             break;
         }
