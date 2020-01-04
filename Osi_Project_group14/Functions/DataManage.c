@@ -270,15 +270,15 @@ void sort (EVENT *event, int position){
     int n=0;  // n - broj elemenata indekse datoteke
 
     strcpy(data->eventID, event->eventID);
-    strcpy(data->key, event->datum);
+    strcpy(data->key, event->date);
     data->position=position;
     //upisemo podatke u data, koji predstavlja element indekse datoteke
-    arr=readFromIndex(&n, "datum.txt");  //iscitavanje elementa iz datoteke
-    printInIndex(arr, data, n , "datum.txt", &compareDatum);  // upis elementa u datoteku
+    arr=readFromIndex(&n, "Data/Index_Datum.txt");  //iscitavanje elementa iz datoteke
+    printInIndex(arr, data, n , "Data/Index_Datum.txt", &compareDatum);  // upis elementa u datoteku
 
     arr=NULL; n=0;
     strcpy(data->key, event->category);  // promijenimo kljuc za novu indeksnu datoteku
-    arr=readFromIndex(&n, "category.txt");
-    printInIndex(arr, data, n, "category.txt", &strcmp);
+    arr=readFromIndex(&n, "Data/Index_Category.txt");
+    printInIndex(arr, data, n, "Data/Index_Category.txt", &strcmp);
     free(data);
 }
