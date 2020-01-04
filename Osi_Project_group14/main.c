@@ -7,7 +7,6 @@
 int main()
 {
     char cityName[20];
-    //short isLoged = 0;
 
     isThereCity(cityName);
 
