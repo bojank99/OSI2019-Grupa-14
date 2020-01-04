@@ -282,3 +282,15 @@ void sort (EVENT *event, int position){
     printInIndex(arr, data, n, "Data/Index_Category.txt", &strcmp);
     free(data);
 }
+
+
+void addComment(int eventsId, char* comment)
+{
+    FILE *filComm;
+    filComm = fopen("Data/Komentari.txt","a");
+    if(filComm!=NULL)
+    {
+        fprintf(filComm, "0,%d,%s\n",eventsId, comment);
+    }
+    fclose(filComm);
+}

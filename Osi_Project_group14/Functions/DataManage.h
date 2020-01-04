@@ -72,3 +72,8 @@ INDEX* readFromIndex(int*, const char*);
 //Funkcija prima pokazivac na dogadjaj koji dodajemo i poziciju tog dogadjaja u glavnoj datoteci (ako je pozicija 0, znaci da brisemo taj element iz datoteke)
 void sort (EVENT*, int);
 
+
+//f-ja za dodavanje komentara u datoteku
+//prima id dogadjaja i komentar
+void addComment(int, char*);
+
