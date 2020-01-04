@@ -29,33 +29,43 @@
 	<stdlib.h>
 	<string.h>
 
+1577826644 D
+
 1578158334 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\datamanage.c
 	"DataManage.h"
 	<stdlib.h>
 	<string.h>
 
+1577961659 bc516ca27aeffd2f2fbdeb7150ca22d23dfc6
+	"DataManage.h"
+	<stdlib.h>
+	<string.h>
+	<stdio.h>
+	<stdio.h>
+	<stdlib.h>
+	"Functions/functions.h"
+
 1578158334 c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\datamanage.h
 	<stdio.h>
 
-1578158334 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\functions.c
+1578160914 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\functions.c
 	"functions.h"
 
 1577548039 c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\functions.h
 	<stdio.h>
 	<stdlib.h>
 
-1577827250 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\show.c
-	<stdio.h>
+1578164571 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\show.c
 	<string.h>
-	<stdlib.h>
 	<conio.h>
 	"Show.h"
 	"DataManage.h"
 	"functions.h"
+	"MainMenu.h"
 
-1577826644 c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\show.h
+1578164079 c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\show.h
 
-1578158334 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\main.c
+1578160914 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\main.c
 	<stdio.h>
 	<stdlib.h>
 	"Functions/functions.h"
@@ -141,10 +151,10 @@
 	<stdlib.h>
 	"Functions/functions.h"
 
-1578158872 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\mainmenu.c
+1578164555 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\mainmenu.c
 	"MainMenu.h"
 
-1578158872 c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\mainmenu.h
+1578161750 c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\mainmenu.h
 	"DataManage.h"
 	<string.h>
 

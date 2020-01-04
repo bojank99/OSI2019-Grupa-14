@@ -83,7 +83,7 @@ void showOptions(char* choice)
     scanf("%c",choice);
 }
 
-int checkUserData(char* usrn,char* passw)
+int checkUserData(char* usrn,char* passw, char* type)
 {
     FILE* users;
     int id;
@@ -100,6 +100,7 @@ int checkUserData(char* usrn,char* passw)
             if (!strcmp(passw, temp.password))
             {
                 return 1;
+                strcpy(type, temp.type);
             }
             else
             {
@@ -162,7 +163,7 @@ void logInForm(char* user)
     printf("Sifra: ");
 }
 
-int userLogIn(char cityName[])
+int userLogIn(char cityName[], char *userName, char *type)
 {
     char* user = (char*)calloc(21, sizeof(char));
     char* password = (char*)calloc(21, sizeof(char));
@@ -184,7 +185,7 @@ int userLogIn(char cityName[])
 
         //ovdje se provjerava da li je korisnik vec registrovan
 
-        if (!(i = checkUserData(user, password)))
+        if (!(i = checkUserData(user, password, type)))
             whileNotLoged = errorUnreg();
         else if (i == -1)
             whileNotLoged = errorWrong();
@@ -193,6 +194,11 @@ int userLogIn(char cityName[])
     }
     if(i<1)
         i = 0;
+    else
+    {
+        strcpy(userName, user);
+    }
+
 
     free(user);
     free(password);
@@ -290,8 +296,8 @@ void registerLayout(char cityName[])
 void chooseOption(char cityName[])
 {
     short choiceLoop = 0, isLoged;
-    char userName[21];
-    char type[7];
+    char *userName=(char*)calloc(21,sizeof(char));
+    char *type=(char*)calloc(7,sizeof(char));
 
 
     //choiceLoop nam omogucava da se vratimo na pocetni ekran
@@ -314,17 +320,21 @@ void chooseOption(char cityName[])
         {
         case '1':
         {
-            isLoged = userLogIn(cityName, );
+            isLoged = userLogIn(cityName,userName,type);
             if(!isLoged)
                 choiceLoop = 0;
-//            else showMainMenu();
+            else
+            {showMainMenu(cityName,type,userName);}
         }
         break;
         case '2':
             registerLayout(cityName);
             break;
-            //case '3': guestLogIn();
-            break;
+        case '3':
+            {
+                showMainMenu(cityName,"guest","Gost1");
+            };
+        break;
         default:
             break;
         }

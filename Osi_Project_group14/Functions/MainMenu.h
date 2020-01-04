@@ -5,9 +5,16 @@
 #include <string.h>
 
 
+//funkcija provjerava tip korisnika
+//prima podatak tipa USER
+//vraca 1-ako je gost, 2-ako je postojeci korisnik, 3-ako je admin
+//f-ja pretpostavlja da ne moze da se desi pogresan unos
+int checkType(char []);
 
-int checkType(USER* user);//1 guest  2user 3 admin,  f-ja pretpostavlja da ne postoji mogucnost da je upisano nesto drugo
-void showMainMenu(USER* user);
+//f-ja prikazuje glavni meni, na osnovu korisnika
+//prima tip korisnika i ime grada
+//za sada ne vraca nista, ali ce najvjerovatnije vracati nesto u buducnosti, nzm jos sta
+void showMainMenu(char[], char[], char[]);
 
 
 
