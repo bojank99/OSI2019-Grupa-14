@@ -662,3 +662,25 @@ int deleteCategory(char* categoryName)
     return 1;
 }
 
+
+void deleteComment(int id, char* userName, char* comment)
+{
+    int readId;
+    char *readUserName = (char*)calloc(21,sizeof(char));
+    char *readComment = (char*)calloc(150,sizeof(char));
+
+    FILE *commentFile,*newFile;
+    commentFile=fopen("Data/Komentari.txt","r");
+    newFile=fopen("Data/Kopija.txt","w");
+    if(commentFile!=NULL && newFile!=NULL)
+    {
+        while((fscanf(commentFile,"%d,%[^,],%[^\n]",&readId,readUserName,readComment))!=EOF)
+            if(!(id == readId && !strcmp(userName,readUserName) && !strcmp(comment,readComment)))
+                fprintf(newFile,"%d,%s,%s\n",readId,readUserName,readComment);
+    }
+    fclose(commentFile);
+    fclose(newFile);
+    remove("Data/Komentari.txt");
+    rename("Data/Kopija.txt","Data/Komentari.txt");
+}
+

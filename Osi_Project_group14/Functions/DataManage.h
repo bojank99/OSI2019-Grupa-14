@@ -100,3 +100,9 @@ void addComment(int,char*,char*);
 //f-ja ne prepoznaje pravilan naziv kategorije
 //pri pozivu f-je morate unijeti tacan naziv kategorije koju hocete da izbrisete
 int deleteCategory(char*);
+
+//f-ja prima id, korisnicko ime, komentar
+//f-ja ne prepoznaje pravilan id, korisnicko ime ili komentar
+//stoga se mora unijeti tacan id, korisnicko ime i komentar
+//kako bi se isto izbrisalo iz datoteke
+void deleteComment(int, char*, char*)
