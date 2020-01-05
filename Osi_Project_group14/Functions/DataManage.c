@@ -355,13 +355,13 @@ void sort (EVENT *event, int position){
 }
 
 
-void addComment(int eventsId, char* comment)
+void addComment(int eventsId,char* userName, char* comment)
 {
     FILE *filComm;
-    filComm = fopen("Data/Komentari.txt","a");
+    filComm = fopen("Data/Komentari_za_Odobravanje.txt","a");
     if(filComm!=NULL)
     {
-        fprintf(filComm, "0,%d,%s\n",eventsId, comment);
+        fprintf(filComm, "%d,%s,%s\n",eventsId,userName,comment);
     }
     fclose(filComm);
 }

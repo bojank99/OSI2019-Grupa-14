@@ -91,6 +91,6 @@ void sort (EVENT*, int);
 
 
 //f-ja za dodavanje komentara u datoteku
-//prima id dogadjaja i komentar
-void addComment(int, char*);
+//prima id dogadjaja, userName i komentar
+void addComment(int,char*,char*);
 
