@@ -431,6 +431,7 @@ int deleteUnregUser(char* usrName){
         openUnregUserData(&unUserFile,"w+");
         fprintf(unUserFile,"");
         fclose(unUserFile);
+	return 1;
     }
     if(found){
         fclose(unUserFile);
