@@ -94,3 +94,9 @@ void sort (EVENT*, int);
 //prima id dogadjaja, userName i komentar
 void addComment(int,char*,char*);
 
+//f-ja prima naziv kategorije
+//vraca 0-ako je kategoriju nemoguce obrisati (standardna kategorija)
+//vraca 1-ako je kategorija izbrisana
+//f-ja ne prepoznaje pravilan naziv kategorije
+//pri pozivu f-je morate unijeti tacan naziv kategorije koju hocete da izbrisete
+int deleteCategory(char*);
