@@ -27,6 +27,12 @@ int openUserData(FILE** users, char* mode) {
 int openEventData(FILE** events, char* mode) {
 	return ((*events) = fopen("Data/Events.txt",mode));
 }
+int openCategoryIndex(FILE** fileI,char* mode){
+    return ((*fileI)=fopen("Data/Index_Category.txt",mode));
+}
+int openDateIndex(FILE** fileI,char* mode){
+    return ((*fileI)=fopen("Data/Index_Datum.txt",mode));
+}
 
 
 int loadUser(USER* user,  FILE* userFile) {
@@ -59,10 +65,30 @@ int loadEvent(EVENT* eve, FILE* eventFile) {
 
 
 void writeUser(USER* user,  FILE* userFile) {								//podrazumjevaju da su korisnici/dogadjaji konacno formirani
-	fprintf(userFile, "%s %s %s %s \n", user->userID, user->userName, user->password, user->type);
+	fprintf(userFile, "%s %s %s %s\n", user->userID, user->userName, user->password, user->type);
 }
 void writeEvent(EVENT* eve,  FILE* eventFile) {
-	fprintf(eventFile, "%s %s %s| %s| %s %s %d \n",eve->eventID, eve->user, eve->headline, eve->description, eve->date, eve->category, eve->finished);
+	fprintf(eventFile, "%s %s %s| %s| %s %s %d\n",eve->eventID, eve->user, eve->headline, eve->description, eve->date, eve->category, eve->finished);
+}
+
+int appendUser(USER* user,FILE* userFile){                  //ova dodaje korisnika na kraj sa racunanjem id-a i ponovnim upisivanjem id-a na pocetak
+    int id;													//varijable za id
+    char idC[6];
+
+    strcpy(user->type,"user");								//stavlja se user kao type novog korisnika
+
+    if(!userFile){return 0;}
+    rewind(userFile);										//uzimanje id-a sa pocetka fajla
+    getId(&id,userFile);
+    id++;													//povecavanje najveceg id-a za 1
+    rewind(userFile);
+    itoa(id,idC,10);
+    strcpy(user->userID,idC);
+    fprintf(userFile,"%05d",id);							// upisuje se novi najveci id na pocetak fajla
+    fseek(userFile,0,SEEK_END);								//ide na kraj fajla i tu samo upisuje info o novom korisniku
+    writeUser(user,userFile);
+    //fclose(userFile);
+    return 1;
 }
 
 int deleteUser(char* userid) {												//NOTE: predpostavlja se da je fajl uspjesno otvoren
@@ -104,7 +130,7 @@ int deleteUser(char* userid) {												//NOTE: predpostavlja se da je fajl us
 	}
 	if (found) {
 		fclose(userFile);
-		openUserData(&userFile, "w+");
+		openUserData(&userFile, "w");
 		fprintf(userFile, "%d\n", id);
 		while (curr) {
 			temp = curr->next;
@@ -113,17 +139,26 @@ int deleteUser(char* userid) {												//NOTE: predpostavlja se da je fajl us
 			free(curr);
 			curr = temp;
 		}
+	}else{
+        while(curr){
+            temp=curr->next;
+            freeUser(curr);
+            free(curr);
+            curr=temp;
+        }
 	}
 	fclose(userFile);
 	return found;
 }
 
 
-int deleteEvent(char* eventId)
+int deleteEvent(char* eventId, unsigned long int* spacing)       //spacing je broj mijesta koje zauzimaju svi char-ovi event-a(vazno za pomjeranje pozicija u indexima)
 {
 	FILE* eventFile;
 	int found = 0; int id; int tmp = atoi(eventId);
-	EVENT* first = 0;
+	unsigned long int current;
+	unsigned long int previous=0;                         //pamti se pocetak i kraj jednog zapisa, kad se nadje odredejn zapsi onda se izracuna spacing kao (pokazivac nakon ucitavanja)-(prije ucitavanja)
+    EVENT* first = 0;
 	EVENT* curr = 0;
 	EVENT* temp = 0;
 
@@ -134,22 +169,26 @@ int deleteEvent(char* eventId)
 		return 0;
 	}
 
-	while (!feof(eventFile)) {											//bice funkicja napisana za listu i to
+	while (!feof(eventFile)) {
 		if (!first) {
 			first = (EVENT*)calloc(1, sizeof(EVENT));
 			createEvent(first);
 			loadEvent(first, eventFile);
 			curr = first;
+			current=ftell(eventFile);
 		}
 		if (!strcmp(eventId, curr->eventID)) {
+            (*spacing)=(ftell(eventFile)-previous-2);
 			loadEvent(curr, eventFile);
 			found = 1;
 		}
 		else {
+            previous=current;
 			curr->next = (EVENT*)calloc(1, sizeof(EVENT));
 			createEvent(curr->next);
 			loadEvent(curr->next, eventFile);
 			curr = curr->next;
+			current=ftell(eventFile);
 		}
 	}
 	fclose(eventFile);
@@ -170,6 +209,40 @@ int deleteEvent(char* eventId)
 	}
 	fclose(eventFile);
 	return found;
+}
+
+int updateIndex(int id,int spacing,char* file){
+    int n=0;
+    INDEX* arrDate;
+    FILE* indexFile;
+
+    if(!(arrDate=readFromIndex(&n,file))){return 0;}
+
+    indexFile=fopen(file,"w");
+
+    for(int i=0;i<n;i++){
+        if(atoi(arrDate[i].eventID)==id){i++;}                    //preskace se zapis koji ima indeks izbrisanog eventa
+        else if(atoi(arrDate[i].eventID)>id){               //u Events fajlu samo events koji dolaze poslije izbrisanog u fajlu(oni sa vecim id-em) mijenjaju svoju poziciju u fajlu, oni prije ne
+            arrDate[i].position-=spacing;                   //racuna se novi position na osnovu spacing-a
+            fprintf(indexFile,"%s %s %d\n",arrDate[i].key,arrDate[i].eventID,arrDate[i].position);
+        }else{
+            fprintf(indexFile,"%s %s %d\n",arrDate[i].key,arrDate[i].eventID,arrDate[i].position);
+        }
+    }
+    fclose(indexFile);
+    return 1;
+}
+
+int removeEvent(char* eventId){
+    unsigned long int spacing;
+
+    if(deleteEvent(eventId,&spacing)){
+        updateIndex(atoi(eventId),spacing+2,"Data/Index_Category.txt");         //+2 na spacing zbog novog reda
+        updateIndex(atoi(eventId),spacing+2,"Data/Index_Datum.txt");
+    }else{
+        return 0;
+    }
+    return 1;
 }
 
 
@@ -193,8 +266,6 @@ void getId(int* id,FILE* opFile)
 	rewind(opFile);
 	fscanf(opFile, "%d ", id);
 }
-
-
 
 
 void makeDatum(const char *datum, int arr[3]){
@@ -293,4 +364,154 @@ void addComment(int eventsId, char* comment)
         fprintf(filComm, "0,%d,%s\n",eventsId, comment);
     }
     fclose(filComm);
+}
+
+
+
+int openUnregUserData(FILE** unregFile,char* mode){
+    return ((*unregFile)=fopen("Data/Korisnicki_zahtjevi.txt",mode));
+}
+
+void allocUnregUser(UNREGUSER* unUser){
+    createUser(&(unUser->base));
+    unUser->name=(char*)calloc(20,sizeof(char));
+    unUser->surname=(char*)calloc(25,sizeof(char));
+    unUser->email=(char*)calloc(22,sizeof(char));
+    unUser->next=0;
+}
+
+int loadUnregUser(UNREGUSER* unrUser,FILE* unregUserFile){
+    if(!feof(unregUserFile)){
+        return fscanf(unregUserFile,"%s %s %s %s %s",unrUser->base.userName,unrUser->base.password,
+               unrUser->email,unrUser->name,unrUser->surname);
+    }
+    return 0;
+}
+
+void writeUnregUser(UNREGUSER* unrUser,FILE* unUserFile){
+    fprintf(unUserFile,"%s %s %s %s %s\n",unrUser->base.userName,unrUser->base.password,
+               unrUser->email,unrUser->name,unrUser->surname);
+}
+
+int deleteUnregUser(char* usrName){
+    FILE* unUserFile;
+    UNREGUSER* first = 0;
+	UNREGUSER* curr = 0;
+	UNREGUSER* temp = 0;
+    UNREGUSER* prelast=0;           //da omoguci brisanje zadnjeg
+    int found=0;
+
+    if(!openUnregUserData(&unUserFile,"r+")){return 0;}
+
+    while(!feof(unUserFile)){
+        if(first==0){
+            first=(UNREGUSER*)calloc(1,sizeof(UNREGUSER));
+            allocUnregUser(first);
+            loadUnregUser(first,unUserFile);
+            curr=first;
+        }
+        if(!strcmp(usrName,curr->base.userName)){
+            found=1;
+            freeUnregUser(curr);
+            allocUnregUser(curr);
+            if(!loadUnregUser(curr,unUserFile)){
+                prelast->next=0;
+            }
+        }else{
+            curr->next=(UNREGUSER*)calloc(1,sizeof(UNREGUSER));
+            allocUnregUser(curr->next);
+            loadUnregUser(curr->next,unUserFile);
+            prelast=curr;
+            curr=curr->next;
+        }
+    }
+
+    curr=first;
+    if(!first->next && found){
+        openUnregUserData(&unUserFile,"w+");
+        fprintf(unUserFile,"");
+        fclose(unUserFile);
+	return 1;
+    }
+    if(found){
+        fclose(unUserFile);
+        openUnregUserData(&unUserFile,"w+");
+        while(curr){
+            temp=curr->next;
+            writeUnregUser(curr,unUserFile);
+            freeUnregUser(curr);
+            free(curr);
+            curr=temp;
+        }
+    }else{
+        while(curr){
+            temp=curr->next;
+            freeUnregUser(curr);
+            free(curr);
+            curr=temp;
+        }
+    }
+    fclose(unUserFile);
+    return found;
+}
+
+int unregUserExist(char* username){                         //pomocna, ako negdje zatreba
+    UNREGUSER* temp=(UNREGUSER*)calloc(1,sizeof(UNREGUSER));
+    FILE* unUserFile;
+
+    openUnregUserData(&unUserFile,"r");
+    allocUnregUser(temp);
+    while(loadUnregUser(temp,unUserFile)){
+        if(!strcmp(username,temp->base.userName)){
+            fclose(unUserFile);
+            return 1;
+        }
+    }
+    fclose(unUserFile);
+    return 0;
+}
+int approveUser(char* username){
+    UNREGUSER* temp=(UNREGUSER*)calloc(1,sizeof(UNREGUSER));
+    FILE* unUserFile;
+    FILE* userFile;
+
+    openUnregUserData(&unUserFile,"r+");
+    allocUnregUser(temp);
+    while(loadUnregUser(temp,unUserFile)){								//prolazak kroz fajl
+        if(!strcmp(username,temp->base.userName)){						//trazi se odgovarajuci korisnik, kad(ako) se nadje appenda se u Users
+            openUserData(&userFile,"r+");
+            appendUser(&(temp->base),userFile);
+            fclose(unUserFile);
+            fclose(userFile);
+            deleteUnregUser(temp->base.userName);
+            return 1;
+        }
+    }
+    fclose(unUserFile);
+    return 0;
+}
+void approveAllUsers(){											//odobrava sve korisnike
+    FILE* unUserFile;
+    FILE* UserFile;
+    UNREGUSER* temp=(UNREGUSER*)calloc(1,sizeof(UNREGUSER));		//ne treba lista, samo jedan u koji se ucitavaju podaci
+
+    openUnregUserData(&unUserFile,"r+");
+    openUserData(&UserFile,"r+");
+    allocUnregUser(temp);
+    while(!feof(unUserFile)){										//prolazi kroz fajl i appenda ih
+        loadUnregUser(temp,unUserFile);
+        appendUser(&temp->base,UserFile);
+    }
+    fclose(UserFile);
+    fclose(unUserFile);
+    openUnregUserData(&unUserFile,"w");								//brise sve iz fajla
+    fprintf(unUserFile,"");
+    fclose(unUserFile);
+
+}
+void freeUnregUser(UNREGUSER* unUser){
+    freeUser(&(unUser->base));
+    free(unUser->name);
+    free(unUser->surname);
+    free(unUser->email);
 }

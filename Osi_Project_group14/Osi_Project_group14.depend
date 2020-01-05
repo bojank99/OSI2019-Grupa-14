@@ -29,132 +29,66 @@
 	<stdlib.h>
 	<string.h>
 
-1577826644 D
-
-1578158334 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\datamanage.c
+1577544654 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\datamanage.c
 	"DataManage.h"
 	<stdlib.h>
 	<string.h>
 
-1577961659 bc516ca27aeffd2f2fbdeb7150ca22d23dfc6
-	"DataManage.h"
-	<stdlib.h>
-	<string.h>
-	<stdio.h>
-	<stdio.h>
-	<stdlib.h>
-	"Functions/functions.h"
-
-1578166321 c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\datamanage.h
+1577544768 c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\datamanage.h
 	<stdio.h>
 
-1578160914 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\functions.c
+1577635719 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\functions.c
 	"functions.h"
 
 1577548039 c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\functions.h
 	<stdio.h>
 	<stdlib.h>
 
-1578165393 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\show.c
+1577826926 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\show.c
+	<stdio.h>
 	<string.h>
+	<stdlib.h>
 	<conio.h>
 	"Show.h"
 	"DataManage.h"
 	"functions.h"
-	"MainMenu.h"
 
-1578164079 c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\show.h
+1577826644 c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\show.h
 
-1578160914 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\main.c
+1577825549 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\main.c
 	<stdio.h>
 	<stdlib.h>
 	"Functions/functions.h"
 
-1577623518 source:c:\users\pc\desktop\osip\osi_project_group14\functions\datamanage.c
+1577923367 source:c:\users\pc\desktop\osip\osi_project_group14\functions\datamanage.c
 	"DataManage.h"
 	<stdlib.h>
 	<string.h>
 
-1577623518 c:\users\pc\desktop\osip\osi_project_group14\functions\datamanage.h
+1577921095 c:\users\pc\desktop\osip\osi_project_group14\functions\datamanage.h
 	<stdio.h>
 
-1577623518 source:c:\users\pc\desktop\osip\osi_project_group14\functions\functions.c
+1577658427 source:c:\users\pc\desktop\osip\osi_project_group14\functions\functions.c
 	"functions.h"
 
 1577623518 c:\users\pc\desktop\osip\osi_project_group14\functions\functions.h
 	<stdio.h>
 	<stdlib.h>
 
-1577623518 source:c:\users\pc\desktop\osip\osi_project_group14\main.c
+1577922303 source:c:\users\pc\desktop\osip\osi_project_group14\main.c
 	<stdio.h>
 	<stdlib.h>
 	"Functions/functions.h"
-	"Functions/Show.h"
+	"Functions/DataManage.h"
 
-1577623518 c:\users\pc\desktop\osip\osi_project_group14\functions\show.h
+1577900442 c:\users\pc\desktop\osip\osi_project_group14\functions\show.h
 
-1577983770 source:c:\users\dell.desktop-ra8skkt.000\desktop\osi2019-grupa-14\osi_project_group14\functions\functions.c
-	"functions.h"
-
-1577983770 c:\users\dell.desktop-ra8skkt.000\desktop\osi2019-grupa-14\osi_project_group14\functions\functions.h
+1577900442 source:c:\users\pc\desktop\osip\osi_project_group14\functions\show.c
 	<stdio.h>
-	<stdlib.h>
-
-1577983770 source:c:\users\dell.desktop-ra8skkt.000\desktop\osi2019-grupa-14\osi_project_group14\functions\show.c
 	<string.h>
+	<stdlib.h>
 	<conio.h>
 	"Show.h"
 	"DataManage.h"
 	"functions.h"
-
-1577983770 c:\users\dell.desktop-ra8skkt.000\desktop\osi2019-grupa-14\osi_project_group14\functions\show.h
-
-1577984254 c:\users\dell.desktop-ra8skkt.000\desktop\osi2019-grupa-14\osi_project_group14\functions\datamanage.h
-	<stdio.h>
-
-1577983770 source:c:\users\dell.desktop-ra8skkt.000\desktop\osi2019-grupa-14\osi_project_group14\main.c
-	<stdio.h>
-	<stdlib.h>
-	"Functions/functions.h"
-
-1577984700 source:c:\users\dell.desktop-ra8skkt.000\desktop\osi2019-grupa-14\osi_project_group14\functions\datamanage.c
-	"DataManage.h"
-	<stdlib.h>
-	<string.h>
-
-1578077479 source:c:\users\ivan\desktop\14\osi_project_group14\functions\datamanage.c
-	"DataManage.h"
-	<stdlib.h>
-	<string.h>
-
-1578077479 c:\users\ivan\desktop\14\osi_project_group14\functions\datamanage.h
-	<stdio.h>
-
-1577976521 source:c:\users\ivan\desktop\14\osi_project_group14\functions\functions.c
-	"functions.h"
-
-1577976521 c:\users\ivan\desktop\14\osi_project_group14\functions\functions.h
-	<stdio.h>
-	<stdlib.h>
-
-1577992601 source:c:\users\ivan\desktop\14\osi_project_group14\functions\show.c
-	<string.h>
-	<conio.h>
-	"Show.h"
-	"DataManage.h"
-	"functions.h"
-
-1577976521 c:\users\ivan\desktop\14\osi_project_group14\functions\show.h
-
-1577976521 source:c:\users\ivan\desktop\14\osi_project_group14\main.c
-	<stdio.h>
-	<stdlib.h>
-	"Functions/functions.h"
-
-1578164875 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\mainmenu.c
-	"MainMenu.h"
-
-1578161750 c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\mainmenu.h
-	"DataManage.h"
-	<string.h>
 

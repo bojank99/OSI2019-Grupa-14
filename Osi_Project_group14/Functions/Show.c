@@ -1,9 +1,10 @@
+#include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include <conio.h>
 #include "Show.h"
 #include "DataManage.h"
 #include "functions.h"
-#include "MainMenu.h"
 #define _CRT_SECURE_NO_WARNINGS
 
 // u headeru je vecina objasnjenja za funkcije
@@ -79,12 +80,11 @@ void showOptions(char* choice)
     printf("1) Prijavite se\n");
     printf("2) Registrujte se\n");
     printf("3) Nastavi kao gost\n");
-    printf("4) Izadji\n");
     printf("Unos: ");
     scanf("%c",choice);
 }
 
-int checkUserData(char* usrn,char* passw, char* type)
+int checkUserData(char* usrn,char* passw)
 {
     FILE* users;
     int id;
@@ -101,7 +101,6 @@ int checkUserData(char* usrn,char* passw, char* type)
             if (!strcmp(passw, temp.password))
             {
                 return 1;
-                strcpy(type, temp.type);
             }
             else
             {
@@ -164,7 +163,7 @@ void logInForm(char* user)
     printf("Sifra: ");
 }
 
-int userLogIn(char cityName[], char *userName, char *type)
+int userLogIn(char cityName[])
 {
     char* user = (char*)calloc(21, sizeof(char));
     char* password = (char*)calloc(21, sizeof(char));
@@ -186,7 +185,7 @@ int userLogIn(char cityName[], char *userName, char *type)
 
         //ovdje se provjerava da li je korisnik vec registrovan
 
-        if (!(i = checkUserData(user, password, type)))
+        if (!(i = checkUserData(user, password)))
             whileNotLoged = errorUnreg();
         else if (i == -1)
             whileNotLoged = errorWrong();
@@ -195,11 +194,6 @@ int userLogIn(char cityName[], char *userName, char *type)
     }
     if(i<1)
         i = 0;
-    else
-    {
-        strcpy(userName, user);
-    }
-
 
     free(user);
     free(password);
@@ -276,7 +270,7 @@ void registerLayout(char cityName[])
         {
             if(inputRequest!=NULL)
             {
-                fprintf(inputRequest,"%d,%s,%s,%s,%s,%s\n",0,username,password,email,ime,prezime);
+                fprintf(inputRequest,"%s %s %s %s %s\n",username,password,email,ime,prezime);
             }
             t=0;
             printf("VAS ZAHTIJEV JE POSLAN\nKADA NALOG BUDE ODOBREN BICETE OBAVJESTENI\n");
@@ -297,8 +291,6 @@ void registerLayout(char cityName[])
 void chooseOption(char cityName[])
 {
     short choiceLoop = 0, isLoged;
-    char *userName=(char*)calloc(21,sizeof(char));
-    char *type=(char*)calloc(7,sizeof(char));
 
 
     //choiceLoop nam omogucava da se vratimo na pocetni ekran
@@ -321,22 +313,17 @@ void chooseOption(char cityName[])
         {
         case '1':
         {
-            isLoged = userLogIn(cityName,userName,type);
+            isLoged = userLogIn(cityName);
             if(!isLoged)
                 choiceLoop = 0;
-            else
-            {showMainMenu(cityName,type,userName);}
+            //else showEvents
         }
         break;
         case '2':
             registerLayout(cityName);
             break;
-        case '3':
-            {
-                showMainMenu(cityName,"guest","Gost1");
-            };
-        break;
-        case '4': return;
+            //case '3': guestLogIn();
+            break;
         default:
             break;
         }

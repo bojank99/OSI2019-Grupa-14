@@ -47,7 +47,7 @@ void newPage(char cityName [])
     #if defined(_WIN32) || defined(_WIN64)
         system("cls");
     #endif
-
+    //system("cls");
     printf("=== Grad %s ===\n",cityName);
 }
 
