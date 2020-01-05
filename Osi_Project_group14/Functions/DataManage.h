@@ -24,6 +24,12 @@ typedef struct Event {
 	struct Event* next;
 }EVENT;
 
+typedef struct comment{                     //struktura za komentar
+    char* comEventID;
+    char* comUsername;
+    char* commentText;
+}COMMENT;
+
 typedef struct EventTab {				    //mozda korisiti za prikaz
 	EVENT** first;							//lista dogadjaja
 	USER* current;							//trenutno ulogovan user
@@ -37,6 +43,7 @@ typedef struct Index{  // Struktura za rad sa indeksnim datoteakama
 
 void createUser(USER*);					//pomocne funkcije za inicijalizovanje
 void createEvent(EVENT*);
+void createComment(COMMENT*);
 
 int openUserData(FILE**, char*);				//za otvaranje fajlova
 int openEventData(FILE**, char*);
@@ -61,11 +68,20 @@ int unregUserExist(char*);                            //kao pomocna ako negdje z
 int approveUser(char*);                               //odobravanje jednog korisnika, unosi se username korisnika
 void approveAllUsers();                               //odobravanje svhih korisnika iz fajla
 
+int openCommentData(FILE**,char*);                      //otvara fajl sa odobrenim komentarima
+int loadComment(COMMENT*,FILE*);                        //ucitava jedan komentar
+int approveComment(char*,char*);                        //odobrava komentar sa prosljedjenim eventID i username-om korisnika(mozda bi bilo blje da svaki neodobren ima svoj id)
+int insertComment(COMMENT*);                            //upisuje komentar u Komentare tako da su svi komentari sa istim eventID grupisani
+int deleteUnApprovedComment(char*,char*);               //brise komentar iz fajla neodobrenih komentara
+void approveAllComments();                              //sve komentare iz fajla odobrava i upisuje u 'Komentari.txt'
+void writeComment(COMMENT*,FILE*);                      //samo formatiran upis komentara u fajl
+
 int removeEvent(char*);                 //brise iz fajla i update-uje indexe(ovu treba koristiti iz menija)
 int updateIndex(int,int,char*);         //update-uje position dio svakog zapisa u indeksu, da bi se poklapalo nakon brisanja eventa
 void freeUser(USER*);					//pomocne za oslobadjanje memorije
 void freeEvent(EVENT*);
 void freeUnregUser(UNREGUSER*);
+void freeComment(COMMENT*);
 
 void getId(int*,FILE*);
 

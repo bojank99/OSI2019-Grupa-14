@@ -20,7 +20,11 @@ void createEvent(EVENT* eve)
     eve->user = (char*)calloc(20, sizeof(char));
     eve->category = (char*)calloc(15, sizeof(char));
 }
-
+void createComment(COMMENT* comm){
+    comm->comEventID=(char*)calloc(6,sizeof(char));
+    comm->comUsername=(char*)calloc(21,sizeof(char));
+    comm->commentText=(char*)calloc(231,sizeof(char));
+}
 
 int openUserData(FILE** users, char* mode)
 {
@@ -37,6 +41,12 @@ int openCategoryIndex(FILE** fileI,char* mode)
 int openDateIndex(FILE** fileI,char* mode)
 {
     return ((*fileI)=fopen("Data/Index_Datum.txt",mode));
+}
+int openCommentData(FILE** comments,char* mode){
+    return((*comments)=fopen("Data/Komentari.txt",mode));
+}
+int openUnApprovedComments(FILE** comments,char* mode){
+    return((*comments)=fopen("Data/Komentar_za_Odobravanje.txt",mode));
 }
 
 
@@ -324,6 +334,12 @@ void freeEvent(EVENT* eve)
     free(eve->description);
     free(eve->headline);
     free(eve->user);
+}
+
+void freeComment(COMMENT* comm){
+    free(comm->comEventID);
+    free(comm->comUsername);
+    free(comm->commentText);
 }
 
 void getId(int* id,FILE* opFile)
@@ -662,6 +678,110 @@ int deleteCategory(char* categoryName)
     return 1;
 }
 
+int insertComment(COMMENT* comm){                                       //upisuje komentar u Komentari.txt da su svi grupisani
+    int found=0;
+    COMMENT temp;
+    createComment(&temp);
+    FILE* newComments=fopen("newComments.txt","w");                     //temp fajl, koji ce sadrzati novi komentar i sve prethodne
+    FILE* comments;
+
+    if(!openCommentData(&comments,"r+")){return 0;}
+    while(loadComment(&temp,comments)){
+        if(!strcmp(temp.comEventID,comm->comEventID) && !found){        //kada se naidje na komentar sa istim event id-om(i nije vec upisan),
+            found=1;                                                        //prvo se upisuje novi pa onda svi stari
+            writeComment(comm,newComments);
+            writeComment(&temp,newComments);
+        }else{
+            writeComment(&temp,newComments);
+        }
+    }
+    if(!found){                                                         //ako uopste nema komentara sa istim eventId-em onda se samo dodaje na kraj
+        fseek(newComments,0,SEEK_END);
+        writeComment(comm,newComments);
+    }
+    fclose(comments);
+    fclose(newComments);
+    if(!remove("Komentari.txt") && !rename("newComments.txt","Komentari.txt")){         //brise se stari a preimenuje se novi fajl
+        freeComment(&comm);
+        return 1;
+    }
+    freeComment(&comm);
+    return 0;
+}
+
+int deleteUnApprovedComment(char* eventID, char* username){                         //slicna prica kao i u insertu, samo se u novi fajl ne upisuje komentar sa istim
+    int found=0;                                                                                //eventid-em i username-om
+    FILE* newComments=fopen("tempComments.txt","w");
+    FILE* comments;
+    COMMENT comm;
+    createComment(&comm);
+
+    openUnApprovedComments(&comments,"r+");
+    while(loadComment(&comm,comments)){
+        if(!strcmp(comm.comEventID,eventID) && !strcmp(username,comm.comUsername)){
+            found=1;
+        }else{
+            writeComment(&comm,newComments);
+        }
+    }
+    fclose(newComments);
+    fclose(comments);
+    if(found){
+        remove("Komentar_za_Odobravanje.txt");
+        rename("tempComments.txt","Komentar_za_Odobravanje.txt");
+        freeComment(&comm);
+        return 1;
+    }else if(!found){
+        remove("tempComments.txt");
+        freeComment(&comm);
+        return 0;
+    }
+}
+
+int approveComment(char* eventID, char* username){                                      //prvo nalazi odgovarajuci komentar, pa onda poziva gore navedene funkcije
+    int found=0;
+    FILE* unComments;
+    COMMENT comm;
+    createComment(&comm);
+
+    openUnApprovedComments(&unComments,"r+");
+    while(!found && loadComment(&comm,unComments)){
+        if(!strcmp(comm.comEventID,eventID) && !strcmp(username,comm.comUsername)){
+            found=1;
+        }
+    }
+    fclose(unComments);
+    if(found && insertComment(&comm) && deleteUnApprovedComment(eventID,username)){
+        freeComment(&comm);
+        return 1;
+    }
+    return 0;
+}
+
+int approveAllComments(){                                  //prolazi kroz citav fajl neodobrenih, i za svaki ucitani poziva insert
+    COMMENT comm;
+    FILE* unComms;
+    createComment(&comm);
+
+    if(!openUnApprovedComments(&unComms,"r+")){return 0;}
+    while(loadComment(&comm,unComms)){
+        if(!insertComment(&comm)){
+            freeComment(&comm);
+            return 0;
+        }
+    }
+    fclose(unComms);
+    openUnApprovedComments(&unComms,"w");                   //ovjde samo pravi prazan fajl
+    fprintf(unComms,"");
+    fclose(unComms);
+    freeComment(&comm);
+    return 1;
+}
+
+void writeComment(COMMENT* comm,FILE* commFile){                            //postojao je problem, ucitavalo se komentar bez teksta pa sam rijesio ovako                                              //pa da ispise bez novog reda na pocetku, inaceispisuje prvo novi red
+        if(!comm->commentText[0]){return;}
+        fprintf(commFile,"%s %s %s\n",comm->comEventID,comm->comUsername,comm->commentText);
+}
 
 void deleteComment(int id, char* userName, char* comment)
 {
