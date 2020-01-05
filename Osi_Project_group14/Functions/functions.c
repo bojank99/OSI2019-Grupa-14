@@ -47,7 +47,53 @@ void newPage(char cityName [])
     #if defined(_WIN32) || defined(_WIN64)
         system("cls");
     #endif
-    //system("cls");
     printf("=== Grad %s ===\n",cityName);
+}
+
+void deleteCity()
+{
+    FILE *newFile1,*newFile2,*newFile3;
+    FILE *newFile4,*newFile5,*newFile6;
+    FILE *newFile7,*newFile8,*newFile9;
+
+    remove("Data/Events.txt");
+    remove("Data/Ime_Grada.txt");
+    remove("Data/Index_Category.txt");
+    remove("Data/Index_Datum.txt");
+    remove("Data/Kategorije.txt");
+    remove("Data/Komentar_za_Odobravanje.txt");
+    remove("Data/Komentari.txt");
+    remove("Data/Korisnicki_zahtjevi.txt");
+    remove("Data/Users.txt");
+
+    newFile1=fopen("Data/Events.txt","w");
+    fputc('0',newFile1);
+    fclose(newFile1);
+
+    newFile2=fopen("Data/Ime_Grada.txt","w");
+    fputc('0',newFile2);
+    fclose(newFile2);
+
+    newFile3=fopen("Data/Index_Category.txt","w");
+    fclose(newFile3);
+
+    newFile4=fopen("Data/Index_Datum.txt","w");
+    fclose(newFile4);
+
+    newFile5=fopen("Data/Kategorije.txt","w");
+    fclose(newFile5);
+
+    newFile6=fopen("Data/Komentar_za_Odobravanje.txt","w");
+    fclose(newFile6);
+
+    newFile7=fopen("Data/Komentari.txt","w");
+    fclose(newFile7);
+
+    newFile8=fopen("Data/Korisnicki_zahtjevi.txt","w");
+    fclose(newFile8);
+
+    newFile9=fopen("Data/Users.txt","w");
+    fputc('0',newFile9);
+    fclose(newFile9);
 }
 
