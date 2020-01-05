@@ -35,9 +35,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Functions/DataManage.h" />
-		<Unit filename="Functions/Functions1.h">
-			<Option target="&lt;{~None~}&gt;" />
+		<Unit filename="Functions/MainMenu.c">
+			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="Functions/MainMenu.h" />
 		<Unit filename="Functions/Show.c">
 			<Option compilerVar="CC" />
 		</Unit>
