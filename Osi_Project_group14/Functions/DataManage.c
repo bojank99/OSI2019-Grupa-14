@@ -91,10 +91,12 @@ int loadEvent(EVENT* eve, FILE* eventFile)
 
 void writeUser(USER* user,  FILE* userFile)  								//podrazumjevaju da su korisnici/dogadjaji konacno formirani
 {
+    if(!user->userName[0]){return;}
     fprintf(userFile, "%s %s %s %s\n", user->userID, user->userName, user->password, user->type);
 }
 void writeEvent(EVENT* eve,  FILE* eventFile)
 {
+    if(!eve->user[0]){return;}
     fprintf(eventFile, "%s %s %s| %s| %s %s %d\n",eve->eventID, eve->user, eve->headline, eve->description, eve->date, eve->category, eve->finished);
 }
 
