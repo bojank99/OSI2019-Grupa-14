@@ -2,7 +2,7 @@
 
 void writeCity(FILE *fp)
 {
-
+    //NAPOMENA, moramo dodati sve podrazumijevane fajlove pri prvom pokretanju app
     rewind(fp);
 
     char cityName[20];
@@ -47,7 +47,51 @@ void newPage(char cityName [])
     #if defined(_WIN32) || defined(_WIN64)
         system("cls");
     #endif
-    //system("cls");
     printf("=== Grad %s ===\n",cityName);
+}
+
+void deleteCity()
+{
+    FILE *newFile1;
+
+    remove("Data/Events.txt");
+    remove("Data/Ime_Grada.txt");
+    remove("Data/Index_Category.txt");
+    remove("Data/Index_Datum.txt");
+    remove("Data/Kategorije.txt");
+    remove("Data/Komentar_za_Odobravanje.txt");
+    remove("Data/Komentari.txt");
+    remove("Data/Korisnicki_zahtjevi.txt");
+    remove("Data/Users.txt");
+
+    newFile1=fopen("Data/Events.txt","w");
+    fputc('0',newFile1);
+    fclose(newFile1);
+
+    newFile1=fopen("Data/Ime_Grada.txt","w");
+    fputc('0',newFile1);
+    fclose(newFile1);
+
+    newFile1=fopen("Data/Index_Category.txt","w");
+    fclose(newFile1);
+
+    newFile1=fopen("Data/Index_Datum.txt","w");
+    fclose(newFile1);
+
+    newFile1=fopen("Data/Kategorije.txt","w");
+    fclose(newFile1);
+
+    newFile1=fopen("Data/Komentar_za_Odobravanje.txt","w");
+    fclose(newFile1);
+
+    newFile1=fopen("Data/Komentari.txt","w");
+    fclose(newFile1);
+
+    newFile1=fopen("Data/Korisnicki_zahtjevi.txt","w");
+    fclose(newFile1);
+
+    newFile1=fopen("Data/Users.txt","w");
+    fputc('0',newFile1);
+    fclose(newFile1);
 }
 
