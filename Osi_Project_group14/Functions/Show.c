@@ -1,6 +1,5 @@
 #include <string.h>
 #include <conio.h>
-#include "Show.h"
 #include "DataManage.h"
 #include "functions.h"
 #include "MainMenu.h"
@@ -277,7 +276,7 @@ void registerLayout(char cityName[])
         {
             if(inputRequest!=NULL)
             {
-                fprintf(inputRequest,"%d,%s,%s,%s,%s,%s\n",0,username,password,email,ime,prezime);
+                fprintf(inputRequest,"%s %s %s %s %s\n",username,password,email,ime,prezime);
             }
             t=0;
             printf("VAS ZAHTIJEV JE POSLAN\nKADA NALOG BUDE ODOBREN BICETE OBAVJESTENI\n");
@@ -337,7 +336,7 @@ void chooseOption(char cityName[])
                 showMainMenu(cityName,"guest","Gost1");
             };
         break;
-        case '4': return;
+        case '4': exit(0);
         default:
             break;
         }

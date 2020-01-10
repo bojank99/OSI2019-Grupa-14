@@ -13,5 +13,4 @@ int main()
     chooseOption(cityName);
 
     return 0;
-
 }

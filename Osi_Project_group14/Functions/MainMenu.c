@@ -1,7 +1,43 @@
 #include "MainMenu.h"
 
+void menuUserApprove()
+{
+    char approveChoice;
+    char* approveUserName = (char*)calloc(21,sizeof(char));
+    UNREGUSER user;
+    allocUnregUser(&user);
+    FILE *fp;
+    openUnregUserData(&fp,"r");
+    printf("korisnici za odobravanje:\n");
+    while(loadUnregUser(&user,fp))
+    {
+        printf("%s %s %s %s\n", user.name, user.surname, user.base.userName, user.email);
+    }
+    fclose(fp);
+    printf("===============================================\n");
+    printf("1) Odobri sve\n2) Odobri samo jednog korisnika\n");
+    printf("===============================================\n");
+    approveChoice=getch();
+    fflush(stdin);
+    switch(approveChoice)
+    {
+    case '1':
+        approveAllUsers();
+        break;
+    case '2':
+    {
+        printf("Unesite korisnicko ime: ");
+        gets(approveUserName);
+        fflush(stdin);
+        if(!approveUser(approveUserName))
+            printf("Greska!");
 
-
+    }
+    break;
+    default:
+        printf("Pogresan unos\n");
+    }
+}
 int checkType(char userType[])
 {
     if (strcmp(userType, "guest")==0)
@@ -70,7 +106,7 @@ void showMainMenu(char cityName[], char userType[], char userName[])
                 break;
             case 2: /*igranje kviza*/
                 break;
-            case 3: /*kreiraj dogadjaj*/
+            case 3: addEvent();
                 break;
             case 4: //brisanje kategorije
                 break;
@@ -100,7 +136,7 @@ void showMainMenu(char cityName[], char userType[], char userName[])
                 break;
             case 2: /*igranje kviza*/
                 break;
-            case 3: /*kreiraj dogadjaj*/
+            case 3: {fflush(stdin); addEvent();}
                 break;
             case 4: /*kreiraj kviz*/
                 break;
@@ -112,7 +148,10 @@ void showMainMenu(char cityName[], char userType[], char userName[])
                 break;
             case 8: //odobravanje komentara
                 break;
-            case 9: //odobravanje korisnika
+            case 9: {
+                        newPage(cityName);
+                        menuUserApprove();
+            }
                 break;
             case 10: return;
                 break;

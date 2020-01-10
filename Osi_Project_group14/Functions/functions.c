@@ -2,7 +2,7 @@
 
 void writeCity(FILE *fp)
 {
-
+    //NAPOMENA, moramo dodati sve podrazumijevane fajlove pri prvom pokretanju app
     rewind(fp);
 
     char cityName[20];
@@ -52,9 +52,7 @@ void newPage(char cityName [])
 
 void deleteCity()
 {
-    FILE *newFile1,*newFile2,*newFile3;
-    FILE *newFile4,*newFile5,*newFile6;
-    FILE *newFile7,*newFile8,*newFile9;
+    FILE *newFile1;
 
     remove("Data/Events.txt");
     remove("Data/Ime_Grada.txt");
@@ -70,30 +68,30 @@ void deleteCity()
     fputc('0',newFile1);
     fclose(newFile1);
 
-    newFile2=fopen("Data/Ime_Grada.txt","w");
-    fputc('0',newFile2);
-    fclose(newFile2);
+    newFile1=fopen("Data/Ime_Grada.txt","w");
+    fputc('0',newFile1);
+    fclose(newFile1);
 
-    newFile3=fopen("Data/Index_Category.txt","w");
-    fclose(newFile3);
+    newFile1=fopen("Data/Index_Category.txt","w");
+    fclose(newFile1);
 
-    newFile4=fopen("Data/Index_Datum.txt","w");
-    fclose(newFile4);
+    newFile1=fopen("Data/Index_Datum.txt","w");
+    fclose(newFile1);
 
-    newFile5=fopen("Data/Kategorije.txt","w");
-    fclose(newFile5);
+    newFile1=fopen("Data/Kategorije.txt","w");
+    fclose(newFile1);
 
-    newFile6=fopen("Data/Komentar_za_Odobravanje.txt","w");
-    fclose(newFile6);
+    newFile1=fopen("Data/Komentar_za_Odobravanje.txt","w");
+    fclose(newFile1);
 
-    newFile7=fopen("Data/Komentari.txt","w");
-    fclose(newFile7);
+    newFile1=fopen("Data/Komentari.txt","w");
+    fclose(newFile1);
 
-    newFile8=fopen("Data/Korisnicki_zahtjevi.txt","w");
-    fclose(newFile8);
+    newFile1=fopen("Data/Korisnicki_zahtjevi.txt","w");
+    fclose(newFile1);
 
-    newFile9=fopen("Data/Users.txt","w");
-    fputc('0',newFile9);
-    fclose(newFile9);
+    newFile1=fopen("Data/Users.txt","w");
+    fputc('0',newFile1);
+    fclose(newFile1);
 }
 
