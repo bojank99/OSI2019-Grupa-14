@@ -66,9 +66,9 @@ int loadUser(USER* user,  FILE* userFile)
 int loadEvent(EVENT* eve, FILE* eventFile)
 {
      int i = 0;
-    char tmp;
-    if (!feof(eventFile))
-    {
+     char tmp;
+     if (!feof(eventFile))
+     {
         fscanf(eventFile, "%s %s ", eve->eventID, eve->user);
         while ((tmp = fgetc(eventFile)) != '|' && tmp != EOF)
         {
@@ -87,7 +87,7 @@ int loadEvent(EVENT* eve, FILE* eventFile)
         }
         fscanf(eventFile, "%s %s %d %s ", eve->date, eve->category, &eve->finished,eve->time);
         i=0;
-        while((tmp=fgetc(eventFile))!='\n' && tmp!=EOF){
+        while((tmp=fgetc(eventFile))!='|' && tmp!=EOF){
             eve->location[i]=tmp;
             i++;
         }
@@ -106,7 +106,7 @@ void writeUser(USER* user,  FILE* userFile)  								//podrazumjevaju da su kori
 void writeEvent(EVENT* eve,  FILE* eventFile)
 {
     if(!eve->user[0]){return;}
-fprintf(eventFile, "%s %s %s| %s| %s %s %d %s %s\n",eve->eventID, eve->user, eve->headline,
+fprintf(eventFile, "%s %s %s| %s| %s %s %d %s %s|\n",eve->eventID, eve->user, eve->headline,
             eve->description, eve->date, eve->category, eve->finished,eve->time,eve->location);}
 
 int appendUser(USER* user,FILE* userFile)                   //ova dodaje korisnika na kraj sa racunanjem id-a i ponovnim upisivanjem id-a na pocetak
@@ -319,8 +319,8 @@ int removeEvent(char* eventId)
 
     if(deleteEvent(eventId,&spacing))
     {
-        updateIndex(atoi(eventId),367+2,"Data/Index_Category.txt");         //+2 na spacing zbog novog reda
-        updateIndex(atoi(eventId),367+2,"Data/Index_Datum.txt");
+        updateIndex(atoi(eventId),391+2,"Data/Index_Category.txt");         //+2 na spacing zbog novog reda
+        updateIndex(atoi(eventId),391+2,"Data/Index_Datum.txt");
     }
     else
     {
@@ -1051,11 +1051,11 @@ void addEvent(char* cityName, char* userName){
                 }
                 fseek(fp, 0, SEEK_END);
                 sort(&data, ftell(fp));
-                index=fprintf(fp, "%s %s %s| %s| %s %s %d %s %s", data.eventID, data.user, data.headline, data.description, data.date,
+                index=fprintf(fp, "%s %s %s| %s| %s %s %d %s %s|", data.eventID, data.user, data.headline, data.description, data.date,
                               data.category, data.finished, data.time, data.location);
                 free(temp);
-                temp=(char*)calloc(368-index,sizeof(char));  // ukupan broj + 1 za /0 na kraju
-                for(int i=0; i<368-index; i++)
+                temp=(char*)calloc(392-index,sizeof(char));  // ukupan broj + 1 za /0 na kraju
+                for(int i=0; i<392-index; i++)
                     temp[i]=' ';
                 fprintf(fp, "%s\n", temp);
                 printf("Uspjesno dodat dogadjaj.");
@@ -1087,8 +1087,8 @@ int findPosition(char *eventID){
     return position;
 }
 
-void editEvent (EVENT *data){
-    newPage("Banjaluka");
+void editEvent (EVENT *data, char* cityName){
+    newPage(cityName);
     FILE *fp;
     INDEX *arr, data1;  // arr --> niz indeksa, data1 ---> pomocna promjenljiva
     EVENT tmp;  // pomocna promjenljiva
@@ -1158,7 +1158,7 @@ void editEvent (EVENT *data){
             printf("Dogadjaj se desava za vise od 5 godina i nije moguce sacuvati promjene.\n");
             freeEvent(&tmp);
             Sleep(5*1000);
-            newPage("Banjaluka");
+            newPage(cityName);
             return;
         }
         position=findPosition(data->eventID);  // pronadjemo poziciju
@@ -1199,7 +1199,7 @@ void editEvent (EVENT *data){
     else printf("Niste sacuvali dogadjaj.\n");
     freeEvent(&tmp);
     Sleep(5*1000);
-    newPage("Banjaluka");
+    newPage(cityName);
 }
 
 void stdprint(INDEX *arr, int n){
@@ -1214,6 +1214,7 @@ void stdprint(INDEX *arr, int n){
         for(int i=0; i<n; i++){
             fseek(fp, arr[i].position, SEEK_SET);
             loadEvent(&data, fp);
+            printf("%d", ftell(fp));
             printf("%d.     %-34s     %-19s     %-10s\n", i+1, data.headline, data.category, data.date);
         }
         fclose(fp);
@@ -1460,16 +1461,16 @@ void printDetails(char *eventID, char *cityName,char* userType, char* userName)
     int n,i;
     fscanf(fp, "%d\n", &n);
     while(loadEvent(&eve,fp))
-    {
         if(strcmp(eve.eventID,eventID)==0)
         {
             printf("Korisnik koji je kreirao dogadjaj: %s\n",eve.user);
             printf("Naziv dogadjaja: %s\n",eve.headline);
             printf("Datum: %s\n",eve.date);
+            printf("Vrijeme: %s\n", eve.time);
+            printf("Lokacija: %s\n", eve.location);
             printf("Kategorija: %s\n",eve.category);
             printf("Opis: %s\n",eve.description);
         }
-    }
 
     fclose(fp);
     openCommentData(&fp,"r");
@@ -1490,7 +1491,10 @@ void printDetails(char *eventID, char *cityName,char* userType, char* userName)
         fflush(stdin);
         switch(i)
         {
-        case 1: editEvent(&eve);
+        case 1:
+            if(!strcmp(userName, eve.user))
+                printf("Ne mozete mijenjati podatke o dogadjaju koji niste Vi napravili.");
+            else editEvent(&eve, cityName);
             break;
         case 2: removeEvent(eve.eventID);
             break;
@@ -1539,7 +1543,7 @@ void printDetails(char *eventID, char *cityName,char* userType, char* userName)
         fflush(stdin);
         switch(i)
         {
-        case 1: editEvent(&eve);
+        case 1: editEvent(&eve, cityName);
             break;
         case 2: removeEvent(eve.eventID);
             break;

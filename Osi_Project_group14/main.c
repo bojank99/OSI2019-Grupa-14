@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Functions/functions.h"
-
+#include "Functions/DataManage.h"
 
 
 int main()
@@ -11,6 +11,5 @@ int main()
     isThereCity(cityName);
 
     chooseOption(cityName);
-
     return 0;
 }

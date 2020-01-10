@@ -1,3 +1,2 @@
 Izlozbe 000001 8
-Koncerti 000003 678
-Promocije 000002 343
+Promocije 000002 402

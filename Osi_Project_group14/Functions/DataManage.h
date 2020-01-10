@@ -157,7 +157,7 @@ void addEvent(char*,char*);
 //pronalazak pozicije dogadjaja za ID-jem eventID u jednoj od indeksnih datoteka
 int findPosition(char *);
 //funkcija za promjenu podataka o dogadjaju koji se salje kao parametar
-void editEvent (EVENT *);
+void editEvent (EVENT *, char*);
 
 
 // funkcija za ispis dogadjaja na standardni izlaz
