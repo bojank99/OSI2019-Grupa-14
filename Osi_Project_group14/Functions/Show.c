@@ -101,8 +101,8 @@ int checkUserData(char* usrn,char* passw, char* type)
         {
             if (!strcmp(passw, temp.password))
             {
-                return 1;
                 strcpy(type, temp.type);
+                return 1;
             }
             else
             {

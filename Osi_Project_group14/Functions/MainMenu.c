@@ -54,6 +54,8 @@ void menuCommentApprovel()
     while(loadComment(&comm,fp))
     {
         printf("%s %s %s\n", comm.comEventID,comm.comUsername,comm.commentText);
+        freeComment(&comm);
+        createComment(&comm);
     }
     fclose(fp);
     printf("===============================================\n");
@@ -148,7 +150,9 @@ void showMainMenu(char cityName[], char userType[], char userName[])
 
             switch(choice)
             {
-            case 1: /*prikaz dogadjaja*/
+            case 1: {
+                printCurrentEvents(cityName,userType,userName);
+            }
                 break;
             case 2: playQuiz();
                 break;
@@ -173,7 +177,7 @@ void showMainMenu(char cityName[], char userType[], char userName[])
             while(choice <1 || choice>5);
             switch(choice)
             {
-            case 1: /*prikaz dogadjaja*/
+            case 1: printCurrentEvents(cityName,userType,userName);
                 break;
             case 2: playQuiz();
                 break;
@@ -204,7 +208,11 @@ void showMainMenu(char cityName[], char userType[], char userName[])
             while(choice <1 || choice>8);
             switch(choice)
             {
-            case 1: /*prikaz dogadjaja*/
+            case 1:
+                {
+                    printCurrentEvents(cityName,userType,userName);
+
+                }
                 break;
             case 2: {newPage(cityName); playQuiz();}
                 break;

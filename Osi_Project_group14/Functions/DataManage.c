@@ -21,7 +21,9 @@ void createEvent(EVENT* eve)
     eve->description = (char*)calloc(250, sizeof(char));
     eve->date = (char*)calloc(11, sizeof(char));
     eve->user = (char*)calloc(20, sizeof(char));
-    eve->category = (char*)calloc(15, sizeof(char));
+    eve->category = (char*)calloc(20, sizeof(char));
+    eve->time=(char*)calloc(6,sizeof(char));
+    eve->location=(char*)calloc(30,sizeof(char));
 }
 void createComment(COMMENT* comm){
     comm->comEventID=(char*)calloc(6,sizeof(char));
@@ -49,7 +51,7 @@ int openCommentData(FILE** comments,char* mode){
     return((*comments)=fopen("Data/Komentari.txt",mode));
 }
 int openUnApprovedComments(FILE** comments,char* mode){
-    return((*comments)=fopen("Data/Komentar_za_Odobravanje.txt",mode));
+    return((*comments)=fopen("Data/Komentari_za_Odobravanje.txt",mode));
 }
 
 
@@ -63,7 +65,7 @@ int loadUser(USER* user,  FILE* userFile)
 }
 int loadEvent(EVENT* eve, FILE* eventFile)
 {
-    int i = 0;
+     int i = 0;
     char tmp;
     if (!feof(eventFile))
     {
@@ -78,15 +80,18 @@ int loadEvent(EVENT* eve, FILE* eventFile)
         }
         fgetc(eventFile);
         i = 0;
-        while ((tmp = fgetc(eventFile)) != '|' && tmp != EOF)
+        while ((tmp = fgetc(eventFile)) != '|')
         {
-            if (tmp != '\n')
-            {
                 eve->description[i] = tmp;
                 i++;
-            }
         }
-        fscanf(eventFile, "%s %s %d", eve->date, eve->category, &eve->finished);
+        fscanf(eventFile, "%s %s %d %s ", eve->date, eve->category, &eve->finished,eve->time);
+        i=0;
+        while((tmp=fgetc(eventFile))!='\n' && tmp!=EOF){
+            eve->location[i]=tmp;
+            i++;
+        }
+
     }
     else return 0;
     return 1;
@@ -101,8 +106,8 @@ void writeUser(USER* user,  FILE* userFile)  								//podrazumjevaju da su kori
 void writeEvent(EVENT* eve,  FILE* eventFile)
 {
     if(!eve->user[0]){return;}
-    fprintf(eventFile, "%s %s %s| %s| %s %s %d\n",eve->eventID, eve->user, eve->headline, eve->description, eve->date, eve->category, eve->finished);
-}
+fprintf(eventFile, "%s %s %s| %s| %s %s %d %s %s\n",eve->eventID, eve->user, eve->headline,
+            eve->description, eve->date, eve->category, eve->finished,eve->time,eve->location);}
 
 int appendUser(USER* user,FILE* userFile)                   //ova dodaje korisnika na kraj sa racunanjem id-a i ponovnim upisivanjem id-a na pocetak
 {
@@ -297,11 +302,11 @@ int updateIndex(int id,int spacing,char* file)
         else if(atoi(arrDate[i].eventID)>id)                //u Events fajlu samo events koji dolaze poslije izbrisanog u fajlu(oni sa vecim id-em) mijenjaju svoju poziciju u fajlu, oni prije ne
         {
             arrDate[i].position-=spacing;                   //racuna se novi position na osnovu spacing-a
-            fprintf(indexFile,"%s %s %06d\n",arrDate[i].key,arrDate[i].eventID,arrDate[i].position);
+            fprintf(indexFile,"%s %s %d\n",arrDate[i].key,arrDate[i].eventID,arrDate[i].position);
         }
         else
         {
-            fprintf(indexFile,"%s %s %06d\n",arrDate[i].key,arrDate[i].eventID,arrDate[i].position);
+            fprintf(indexFile,"%s %s %d\n",arrDate[i].key,arrDate[i].eventID,arrDate[i].position);
         }
     }
     fclose(indexFile);
@@ -314,8 +319,8 @@ int removeEvent(char* eventId)
 
     if(deleteEvent(eventId,&spacing))
     {
-        updateIndex(atoi(eventId),333+2,"Data/Index_Category.txt");         //+2 na spacing zbog novog reda
-        updateIndex(atoi(eventId),333+2,"Data/Index_Datum.txt");
+        updateIndex(atoi(eventId),367+2,"Data/Index_Category.txt");         //+2 na spacing zbog novog reda
+        updateIndex(atoi(eventId),367+2,"Data/Index_Datum.txt");
     }
     else
     {
@@ -340,6 +345,8 @@ void freeEvent(EVENT* eve)
     free(eve->description);
     free(eve->headline);
     free(eve->user);
+    free(eve->location);
+    free(eve->time);
 }
 
 void freeComment(COMMENT* comm){
@@ -696,8 +703,8 @@ int deleteUnApprovedComment(char* eventID, char* username){                     
     fclose(newComments);
     fclose(comments);
     if(found){
-        remove("Data/Komentar_za_Odobravanje.txt");
-        rename("Data/tempComments.txt","Data/Komentar_za_Odobravanje.txt");
+        remove("Data/Komentari_za_Odobravanje.txt");
+        rename("Data/tempComments.txt","Data/Komentari1_za_Odobravanje.txt");
         freeComment(&comm);
         return 1;
     }else if(!found){
@@ -929,6 +936,20 @@ void inputEventData(EVENT *data){
     strcpy(data->date, temp);
     free(temp);
 
+    printf("Unesite vrijeme (hh:mm): ");
+    temp=inputString();
+    temp=(char*)realloc(temp, 6*sizeof(char));
+    temp[5]=0;
+    strcpy(data->time, temp);
+    free(temp);
+
+    printf("Unesite lokaciju(29): ");
+    temp=inputString();
+    temp=(char*)realloc(temp, 30*sizeof(char));
+    temp[29]=0;
+    strcpy(data->location, temp);
+    free(temp);
+
     inputCategory(data);  // pozivanje funkcije za unos kategorije
     data->finished=(!isFinished(data->date)) ? 0 : 1;
 }
@@ -1007,6 +1028,8 @@ void addEvent(char* cityName, char* userName){
             printf("Naziv dogadjaja: %s\n", data.headline);
             printf("Opis dogadjaja: %s\n", data.description);
             printf("Datum odrzavanja: %s\n", data.date);
+            printf("Vrijeme odrzavanja: %s\n", data.time);
+            printf("Lokacija odrzavanja: %s\n", data.location);
             printf("Vrsta dogadjaja: %s\n", data.category);
             printf("Da li zelite sacuvati dogadjaj sa prethodnim podacima?\n1. Da\n2. Ne\nUnesite izbor: ");  // potvrda sacuvavanja
             index=chooseOption2(1, 2);  // indeks se koristi kao opcija, posto nam dalje ne treba
@@ -1028,10 +1051,11 @@ void addEvent(char* cityName, char* userName){
                 }
                 fseek(fp, 0, SEEK_END);
                 sort(&data, ftell(fp));
-                index=fprintf(fp, "%s %s %s| %s| %s %s %d", data.eventID, data.user, data.headline, data.description, data.date, data.category, data.finished);
+                index=fprintf(fp, "%s %s %s| %s| %s %s %d %s %s", data.eventID, data.user, data.headline, data.description, data.date,
+                              data.category, data.finished, data.time, data.location);
                 free(temp);
-                temp=(char*)calloc(334-index,sizeof(char));  // ukupan broj + 1 za /0 na kraju
-                for(int i=0; i<333-index; i++)
+                temp=(char*)calloc(368-index,sizeof(char));  // ukupan broj + 1 za /0 na kraju
+                for(int i=0; i<368-index; i++)
                     temp[i]=' ';
                 fprintf(fp, "%s\n", temp);
                 printf("Uspjesno dodat dogadjaj.");
@@ -1079,8 +1103,10 @@ void editEvent (EVENT *data){
         printf("1. Naziv dogadjaja: %s\n", data->headline);
         printf("2. Opis dogadjaja: %s\n", data->description);
         printf("3. Datum: %s\n", data->date);
+        printf("4. Vrijeme: %s\n", data->time);
+        printf("5. Lokacija: %s\n", data->location);
         printf("Izaberite sta zelite mijenjati: ");
-        n=chooseOption2(1,3); //izaberemo sta zelimo da se promijeni, zatim to promijenimo
+        n=chooseOption2(1,5); //izaberemo sta zelimo da se promijeni, zatim to promijenimo
         if(n==1){
             printf("Unesite naziv dogadjaja (34): ");
             temp=inputString();
@@ -1097,7 +1123,7 @@ void editEvent (EVENT *data){
             strcpy(data->description, temp);
             free(temp);
         }
-        else{
+        else if(n==3){
             printf("Unesite datum (dd.mm.gggg.): ");
             temp=inputString();
             temp=(char*)realloc(temp, 12*sizeof(char));
@@ -1105,6 +1131,22 @@ void editEvent (EVENT *data){
             strcpy(data->date, temp);
             free(temp);
             flag=1;  // oznacimo ako se mijenja kljuc
+        }
+        else if(n==4){
+            printf("Unesite vrijeme (hh:mm): ");
+            temp=inputString();
+            temp=(char*)realloc(temp, 6*sizeof(char));
+            temp[5]=0;
+            strcpy(data->description, temp);
+            free(temp);
+        }
+        else{
+            printf("Unesite lokaciju(29): ");
+            temp=inputString();
+            temp=(char*)realloc(temp, 30*sizeof(char));
+            temp[29]=0;
+            strcpy(data->description, temp);
+            free(temp);
         }
         printf("Da li zelite mijenjati jos nesto?\n1. Da\n2. Ne\nIzaberite opciju: ");  //provjerimo da li se zeli mijenjati jos nesto
         n=chooseOption2(1,2);
@@ -1136,7 +1178,8 @@ void editEvent (EVENT *data){
                 loadEvent(&tmp, fp);  // iscitamo dogadjaj
                 old=ftell(fp)-2;  // sacuvamo krajnju poziciju tog dogadjaja prije promjene
                 fseek(fp, position, SEEK_SET);
-                fprintf(fp, "%s %s %s| %s| %s %s %d ", data->eventID, data->user, data->headline, data->description, data->date, data->category, data->finished);  // upisemo promjenu u datoteku
+                fprintf(fp, "%s %s %s| %s| %s %s %d %s %s", data->eventID, data->user, data->headline, data->description, data->date,
+                        data->category, data->finished, data->time, data->location);  // upisemo promjenu u datoteku
                 neww=ftell(fp);  // izracunamo novu poziciju
                 if(neww<old){
                     n=20;
@@ -1144,7 +1187,8 @@ void editEvent (EVENT *data){
                     for(i=0; i<old-neww; i++) // ako je duzina novog dogadjaja manja od starog ,napravimo niz razmaka koji ce pokriti zaostale podatke starog dogadjaja
                         novi[i]=' ';
                     fseek(fp, position, SEEK_SET);
-                    fprintf(fp, "%s %s %s| %s| %s %s %d %s", data->eventID, data->user, data->headline, data->description, data->date, data->category, data->finished, novi);
+                    fprintf(fp, "%s %s %s| %s| %s %s %d %s %s %s", data->eventID, data->user, data->headline,
+                            data->description, data->date, data->category, data->finished, data->time, data->location, novi);
                 }
                 fclose(fp);
             }
@@ -1156,4 +1200,369 @@ void editEvent (EVENT *data){
     freeEvent(&tmp);
     Sleep(5*1000);
     newPage("Banjaluka");
+}
+
+void stdprint(INDEX *arr, int n){
+    FILE *fp;
+    EVENT data;
+    createEvent(&data);
+    openEventData(&fp, "r");
+    if(fp!=NULL){
+        printf("---------------------------------------------------------------------------------\n");
+        printf("RB.          Naziv dogadjaja                     Kategorija             Datum\n");
+        printf("---------------------------------------------------------------------------------\n");
+        for(int i=0; i<n; i++){
+            fseek(fp, arr[i].position, SEEK_SET);
+            loadEvent(&data, fp);
+            printf("%d.     %-34s     %-19s     %-10s\n", i+1, data.headline, data.category, data.date);
+        }
+        fclose(fp);
+    }
+    else printf("ERROR!\n");
+    freeEvent(&data);
+}
+
+void printCurrentEvents(char* cityName, char* userType, char*userName){
+    newPage(cityName);
+    char*date=currentDate();
+    INDEX *arr=NULL;
+    int choice;
+    int i;
+    FILE *fp=fopen("Data/Index_Datum.txt", "r");
+    INDEX temp={0};
+    int u=20,n=0;
+    if(fp!=NULL){
+        arr=(INDEX*)calloc(u, sizeof(INDEX));
+        while(fscanf(fp, "%s %s %d\n", temp.key, temp.eventID, &temp.position)==3){
+            if(!compareDatum(date, temp.key))
+                arr[n++]=temp;
+            if(n==u) arr=(INDEX *)realloc(arr, (u*=2)*sizeof(INDEX));
+        }
+        arr=(INDEX *)realloc(arr, n*sizeof(INDEX));
+        fclose(fp);
+    }
+    else printf("ERROR!");
+    free(date);
+    if(arr==NULL){
+        printf("Nema dogadjaja koji se odrzavaju danas.\n");
+        return;
+    }
+    printf("Danasnji dogadjaji:\n");
+    stdprint(arr, n);
+
+    printf("\n1) Detaljan prikaz dogadjaja\n2) Prikaz proslih dogadjaja\n3) Prikaz buducih dogadjaja\n");
+    printf("4) Prikaz po kategoriji\n5) Nazad\n");
+    choice = chooseOption2(1,5);
+    fflush(stdin);
+
+    switch(choice)
+    {
+        case 1: {
+            printf("Izaberite redni br. dogadjaja: ");
+            i = chooseOption2(1,n);
+            printDetails(arr[i-1].eventID, cityName,userType,userName);
+        }
+        break;
+        case 2: printPreviousEvents(cityName,userType,userName);
+        break;
+        case 3: printFutureEvents(cityName,userType,userName);
+        break;
+        case 4: printCategoryEvents(cityName,userType,userName);
+        break;
+        case 5:{
+            free(arr);
+            return;
+        }
+    }
+    free(arr);
+}
+
+void printPreviousEvents(char* cityName, char* userType,char *userName){
+    newPage(cityName);
+    char*date=currentDate();
+    INDEX *arr=NULL;
+    FILE *fp=fopen("Data/Index_Datum.txt", "r");
+    INDEX temp={0};
+    int u=20,n=0,choice, i;
+    if(fp!=NULL){
+        arr=(INDEX*)calloc(u, sizeof(INDEX));
+        while(fscanf(fp, "%s %s %d\n", temp.key, temp.eventID, &temp.position)==3){
+            if(compareDatum(date, temp.key)==1)
+                arr[n++]=temp;
+            if(n==u) arr=(INDEX *)realloc(arr, (u*=2)*sizeof(INDEX));
+        }
+        arr=(INDEX *)realloc(arr, n*sizeof(INDEX));
+        fclose(fp);
+    }
+    else printf("ERROR!");
+    free(date);
+    if(arr==NULL){
+        printf("Nema dogadjaja proslih danas.\n");
+        return;
+    }
+    printf("Prosli dogadjaji: \n");
+    stdprint(arr, n);
+    printf("\n1) Detaljan prikaz dogadjaja\n2) Prikaz danasnjih dogadjaja\n3) Prikaz buducih dogadjaja\n");
+    printf("4) Prikaz po kategoriji\n5) Nazad\n");
+    choice = chooseOption2(1,5);
+    fflush(stdin);
+
+    switch(choice)
+    {
+        case 1: {
+            printf("Izaberite redni br. dogadjaja: ");
+            i = chooseOption2(1,n);
+            printDetails(arr[i-1].eventID, cityName, userType,userName);
+        }
+        break;
+        case 2: printCurrentEvents(cityName,userType,userName);
+        break;
+        case 3: printFutureEvents(cityName,userType,userName);
+        break;
+        case 4: printCategoryEvents(cityName,userType,userName);
+        break;
+        case 5:{
+            free(arr);
+            return;
+        }
+    }
+    free(arr);
+}
+
+void printFutureEvents(char* cityName, char* userType,char*userName){
+    newPage(cityName);
+    char*date=currentDate();
+    INDEX *arr=NULL;
+    FILE *fp=fopen("Data/Index_Datum.txt", "r");
+    INDEX temp={0};
+    int u=20,n=0,choice, i;
+    if(fp!=NULL){
+        arr=(INDEX*)calloc(u, sizeof(INDEX));
+        while(fscanf(fp, "%s %s %d\n", temp.key, temp.eventID, &temp.position)==3){
+            if(compareDatum(date, temp.key)==-1)
+                arr[n++]=temp;
+            if(n==u) arr=(INDEX *)realloc(arr, (u*=2)*sizeof(INDEX));
+        }
+        arr=(INDEX *)realloc(arr, n*sizeof(INDEX));
+        fclose(fp);
+    }
+    else printf("ERROR!");
+    free(date);
+    if(arr==NULL){
+        printf("Nema dogadjaja buducih danas.\n");
+        return;
+    }
+    printf("Buduci dogadjaji: \n");
+    stdprint(arr, n);
+    printf("\n1) Detaljan prikaz dogadjaja\n2) Prikaz proslih dogadjaja\n3) Prikaz danasnjih dogadjaja\n");
+    printf("4) Prikaz po kategoriji\n5) Nazad\n");
+    choice = chooseOption2(1,5);
+    fflush(stdin);
+
+    switch(choice)
+    {
+        case 1: {
+            printf("Izaberite redni br. dogadjaja: ");
+            i = chooseOption2(1,n);
+            printDetails(arr[i-1].eventID, cityName,userType,userName);
+        }
+        break;
+        case 2: printPreviousEvents(cityName,userType,userName);
+        break;
+        case 3: printCurrentEvents(cityName,userType,userName);
+        break;
+        case 4: printCategoryEvents(cityName,userType,userName);
+        break;
+        case 5: {
+            free(arr);
+            return;
+        }
+    }
+    free(arr);
+}
+
+char* chooseCategory(){
+    int n=0, i;
+    char**s=readCategories(&n), *temp=(char*)calloc(15,sizeof(char));
+    for(i=0; i<n; i++)
+        printf("%d.%s\n", i+1, s[i]);
+    printf("Odaberite kategoriju: ");
+    i=chooseOption2(1,n);
+    strcpy(temp, s[i-1]);
+    for(i=0; i<n; i++)
+        free(s[i]);
+    free(s);
+    return temp;
+}
+
+void printCategoryEvents(char* cityName, char* userType,char* userName){
+    newPage(cityName);
+    INDEX *arr=NULL;
+    FILE *fp=fopen("Data/Index_Category.txt", "r");
+    INDEX temp={0};
+    int u=20,n=0,choice, i;
+    char *cat=chooseCategory();
+    if(fp!=NULL){
+        arr=(INDEX*)calloc(u, sizeof(INDEX));
+        while(fscanf(fp, "%s %s %d\n", temp.key, temp.eventID, &temp.position)==3){
+            if(!strcasecmp(cat, temp.key))
+                arr[n++]=temp;
+            if(n==u) arr=(INDEX *)realloc(arr, (u*=2)*sizeof(INDEX));
+        }
+        arr=(INDEX *)realloc(arr, n*sizeof(INDEX));
+        fclose(fp);
+    }
+    else printf("ERROR!");
+    if(arr==NULL){
+        printf("Nema dogadjaja '%s' kategorije.\n", cat);
+        return;
+    }
+    printf("Dogadjaji '%s' kategorije: \n", cat);
+    stdprint(arr, n);
+    free(cat);
+
+    printf("\n1) Detaljan prikaz dogadjaja\n2) Prikaz proslih dogadjaja\n3) Prikaz sadasnjih dogadjaja\n");
+    printf("4) Prikaz buducih dogadjaja\n5) Nazad\n");
+    choice = chooseOption2(1,5);
+    fflush(stdin);
+
+    switch(choice)
+    {
+        case 1: {
+            printf("Izaberite redni br. dogadjaja: ");
+            i = chooseOption2(1,n);
+            printDetails(arr[i-1].eventID, cityName,userType,userName);
+        }
+        break;
+        case 2: printPreviousEvents(cityName,userType,userName);
+        break;
+        case 3: printCurrentEvents(cityName,userType,userName);
+        break;
+        case 4: printFutureEvents(cityName,userType,userName);
+        break;
+        case 5: {
+            free(arr);
+            return;
+        }
+    }
+    free(arr);
+}
+
+void printDetails(char *eventID, char *cityName,char* userType, char* userName)
+{
+    newPage(cityName);
+    EVENT eve;
+    createEvent(&eve);
+    COMMENT com;
+    createComment(&com);
+    FILE *fp;
+    openEventData(&fp,"r");
+    int n,i;
+    fscanf(fp, "%d\n", &n);
+    while(loadEvent(&eve,fp))
+    {
+        if(strcmp(eve.eventID,eventID)==0)
+        {
+            printf("Korisnik koji je kreirao dogadjaj: %s\n",eve.user);
+            printf("Naziv dogadjaja: %s\n",eve.headline);
+            printf("Datum: %s\n",eve.date);
+            printf("Kategorija: %s\n",eve.category);
+            printf("Opis: %s\n",eve.description);
+        }
+    }
+
+    fclose(fp);
+    openCommentData(&fp,"r");
+    while(fscanf(fp, "%s,%s,%[^\n]\n",com.comEventID,com.comUsername,com.commentText)!=EOF)
+    {
+        if(strcmp(com.comEventID,eventID)==0)
+        {
+            printf("%s:",com.comUsername);
+            printf("%s\n",com.commentText);
+        }
+    }
+    fclose(fp);
+
+    if(!strcmp(userType,"admin"))
+    {
+        printf("\n1)Izmjeni dogadjaj\n2)Izbrisi dogadjaj\n3)Dodaj komentar\n4)Brisi komentar\n5)Nazad\n");
+        i=chooseOption2(1,5);
+        fflush(stdin);
+        switch(i)
+        {
+        case 1: editEvent(&eve);
+            break;
+        case 2: removeEvent(eve.eventID);
+            break;
+        case 3: {
+            char*kom = (char*)calloc(200,sizeof(char));
+            printf("\nNapisi komentar\n");
+            gets(kom);
+            fflush(stdin);
+            addComment(atoi(eve.eventID),userName,kom);
+        }
+            break;
+        case 4:
+            {
+                COMMENT comm,pom[15];
+                createComment(&comm);
+                FILE *fp;
+                int j = 0;
+                openCommentData(&fp, "r");
+                while(loadComment(&com,fp))
+                {
+                    if(strcmp(eventID,com.comEventID))
+                    {
+                        printf("%d) %s , %s\n",++j, comm.comUsername, comm.commentText);
+                        createComment(&pom[j-1]);
+                        pom[j-1] = comm;
+                    }
+                }
+
+                printf("\nIzaberi komentar: ");
+                int h;
+                scanf("%d",&h);
+                fflush(stdin);
+
+                deleteComment(atoi(pom[h-1].comEventID),pom[h-1].comUsername,pom[h-1].commentText);
+            }
+            break;
+        case 5: return;
+            break;
+        default: break;
+        }
+    }
+    else if (!strcmp(userType,"user"))
+    {
+        printf("\n1)Izmjeni dogadjaj\n2)Izbrisi dogadjaj\n3)Dodaj komentar\n4)Nazad\n");
+        i=chooseOption2(1,5);
+        fflush(stdin);
+        switch(i)
+        {
+        case 1: editEvent(&eve);
+            break;
+        case 2: removeEvent(eve.eventID);
+            break;
+        case 3: {
+            char*kom = (char*)calloc(200,sizeof(char));
+            printf("\nNapisi komentar\n");
+            gets(kom);
+            fflush(stdin);
+            addComment(atoi(eve.eventID),userName,kom);
+        }
+            break;
+        case 4: return;
+            break;
+        default: break;
+        }
+    }
+    else
+    {
+        printf("\n1)Nazad\n");
+        scanf("%d",&i);
+        fflush(stdin);
+    }
+
+    freeEvent(&eve);
+    freeComment(&com);
 }

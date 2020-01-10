@@ -21,7 +21,7 @@ typedef struct unregUser{
 }UNREGUSER;
 
 typedef struct Event {
-	char* eventID; char* headline; char* category; char* description; char* date; char* user;
+	char* eventID; char* headline; char* category; char* description; char* date; char* user; char* time; char* location;
 	int finished;					//kao bool
 	struct Event* next;
 }EVENT;
@@ -38,7 +38,7 @@ typedef struct EventTab {				    //mozda korisiti za prikaz
 }EventTab;
 
 typedef struct Index{  // Struktura za rad sa indeksnim datoteakama
-    char eventID[7], key[15];
+    char eventID[7], key[20];
     int position;
 }INDEX;
 
@@ -158,3 +158,19 @@ void addEvent(char*,char*);
 int findPosition(char *);
 //funkcija za promjenu podataka o dogadjaju koji se salje kao parametar
 void editEvent (EVENT *);
+
+
+// funkcija za ispis dogadjaja na standardni izlaz
+void stdprint(INDEX *, int);
+// funkcija koja ispisuje danasnje dogadjaje
+void printCurrentEvents(char*,char*,char*);
+// funckija koja ispisuje prosle dogadjaje
+void printPreviousEvents(char*,char*,char*);
+//funkcija koja ispisuje buduce dogadjaje
+void printFutureEvents(char*,char*,char*);
+//funkcija koja sluzi za izbor kategorije
+char* chooseCategory();
+// funkcija koja ispisuje sve dogadjaje iz datoteke events koji su odredjene kateogrije
+void printCategoryEvents(char*,char*,char*);
+//funkcija koja ispisuje detaljne podatke o dogadjaju
+void printDetails(char *eventID, char*, char*,char*);

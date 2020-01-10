@@ -104,35 +104,89 @@
 	<stdlib.h>
 	<conio.h>
 
-1578566345 source:c:\users\dell.desktop-ra8skkt.000\desktop\osi2019-grupa-14\osi_project_group14\functions\mainmenu.c
+1578685164 source:c:\users\dell.desktop-ra8skkt.000\desktop\osi2019-grupa-14\osi_project_group14\functions\mainmenu.c
 	"MainMenu.h"
+	<stdlib.h>
+	<conio.h>
 
 1578566345 c:\users\dell.desktop-ra8skkt.000\desktop\osi2019-grupa-14\osi_project_group14\functions\mainmenu.h
 	"DataManage.h"
 	<string.h>
 
-1578567998 c:\users\dell.desktop-ra8skkt.000\desktop\osi2019-grupa-14\osi_project_group14\functions\datamanage.h
+1578685774 c:\users\dell.desktop-ra8skkt.000\desktop\osi2019-grupa-14\osi_project_group14\functions\datamanage.h
 	<stdio.h>
 	"Show.h"
+	<ctype.h>
 
-1578568034 source:c:\users\dell.desktop-ra8skkt.000\desktop\osi2019-grupa-14\osi_project_group14\functions\show.c
+1578682491 source:c:\users\dell.desktop-ra8skkt.000\desktop\osi2019-grupa-14\osi_project_group14\functions\show.c
 	<string.h>
 	<conio.h>
 	"DataManage.h"
 	"functions.h"
 	"MainMenu.h"
 
-1578566345 c:\users\dell.desktop-ra8skkt.000\desktop\osi2019-grupa-14\osi_project_group14\functions\show.h
+1578658383 c:\users\dell.desktop-ra8skkt.000\desktop\osi2019-grupa-14\osi_project_group14\functions\show.h
 
-1577983770 c:\users\dell.desktop-ra8skkt.000\desktop\osi2019-grupa-14\osi_project_group14\functions\functions.h
+1578674833 c:\users\dell.desktop-ra8skkt.000\desktop\osi2019-grupa-14\osi_project_group14\functions\functions.h
 	<stdio.h>
 	<stdlib.h>
 
-1578566345 source:c:\users\dell.desktop-ra8skkt.000\desktop\osi2019-grupa-14\osi_project_group14\main.c
+1578674833 source:c:\users\dell.desktop-ra8skkt.000\desktop\osi2019-grupa-14\osi_project_group14\main.c
 	<stdio.h>
 	<stdlib.h>
 	"Functions/functions.h"
 
-1578566345 source:c:\users\dell.desktop-ra8skkt.000\desktop\osi2019-grupa-14\osi_project_group14\functions\functions.c
+1578674833 source:c:\users\dell.desktop-ra8skkt.000\desktop\osi2019-grupa-14\osi_project_group14\functions\functions.c
 	"functions.h"
+
+1578684327 source:c:\users\dell.desktop-ra8skkt.000\desktop\osi2019-grupa-14\osi_project_group14\functions\datamanage.c
+	"DataManage.h"
+	<stdlib.h>
+	<string.h>
+	<ctype.h>
+	<time.h>
+	<windows.h>
+
+1578686926 source:c:\users\dell.desktop-ra8skkt.000\desktop\osi_project_group14\functions\datamanage.c
+	"DataManage.h"
+	<stdlib.h>
+	<string.h>
+	<ctype.h>
+	<time.h>
+	<windows.h>
+
+1578686926 c:\users\dell.desktop-ra8skkt.000\desktop\osi_project_group14\functions\datamanage.h
+	<stdio.h>
+	"Show.h"
+	<ctype.h>
+
+1578658383 c:\users\dell.desktop-ra8skkt.000\desktop\osi_project_group14\functions\show.h
+
+1578674833 source:c:\users\dell.desktop-ra8skkt.000\desktop\osi_project_group14\functions\functions.c
+	"functions.h"
+
+1578674833 c:\users\dell.desktop-ra8skkt.000\desktop\osi_project_group14\functions\functions.h
+	<stdio.h>
+	<stdlib.h>
+
+1578686926 source:c:\users\dell.desktop-ra8skkt.000\desktop\osi_project_group14\functions\mainmenu.c
+	"MainMenu.h"
+	<stdlib.h>
+	<conio.h>
+
+1578566345 c:\users\dell.desktop-ra8skkt.000\desktop\osi_project_group14\functions\mainmenu.h
+	"DataManage.h"
+	<string.h>
+
+1578686926 source:c:\users\dell.desktop-ra8skkt.000\desktop\osi_project_group14\functions\show.c
+	<string.h>
+	<conio.h>
+	"DataManage.h"
+	"functions.h"
+	"MainMenu.h"
+
+1578674833 source:c:\users\dell.desktop-ra8skkt.000\desktop\osi_project_group14\main.c
+	<stdio.h>
+	<stdlib.h>
+	"Functions/functions.h"
 
