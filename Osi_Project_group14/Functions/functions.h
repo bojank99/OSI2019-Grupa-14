@@ -20,4 +20,6 @@ void isThereCity(char []);
 //funkcija prima ime grada
 void newPage(char []);
 
+void deleteCity();
+
 #endif

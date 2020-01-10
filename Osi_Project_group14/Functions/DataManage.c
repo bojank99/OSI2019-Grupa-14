@@ -684,3 +684,4 @@ void deleteComment(int id, char* userName, char* comment)
     rename("Data/Kopija.txt","Data/Komentari.txt");
 }
 
+

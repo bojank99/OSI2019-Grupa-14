@@ -82,6 +82,7 @@ void showOptions(char* choice)
     printf("4) Izadji\n");
     printf("Unos: ");
     scanf("%c",choice);
+    fflush(stdin);
 }
 
 int checkUserData(char* usrn,char* passw, char* type)

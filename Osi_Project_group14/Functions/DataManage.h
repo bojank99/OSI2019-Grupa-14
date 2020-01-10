@@ -105,4 +105,4 @@ int deleteCategory(char*);
 //f-ja ne prepoznaje pravilan id, korisnicko ime ili komentar
 //stoga se mora unijeti tacan id, korisnicko ime i komentar
 //kako bi se isto izbrisalo iz datoteke
-void deleteComment(int, char*, char*)
+void deleteComment(int, char*, char*);
