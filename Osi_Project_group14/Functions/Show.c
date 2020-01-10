@@ -344,3 +344,4 @@ void chooseOption(char cityName[])
     fflush(stdin);                              //pojma nemam sta je ovo, ostalo od dejana
 
 }
+

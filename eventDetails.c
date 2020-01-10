@@ -73,7 +73,7 @@ void printDetails(char *eventID, EVENT* eve, COMMENT* com, FILE* eventFile, FILE
         }
     }
 
-    while(fscanf(comFile, "%s,%s,%s\n",com->comEventID,com->comUsername,com->commentText)!=EOF)
+    while(fscanf(comFile, "%s,%s,%[^\n]\n",com->comEventID,com->comUsername,com->commentText)!=EOF)
     {
         if(strcmp(com->comEventID,eventID)==0)
         {
