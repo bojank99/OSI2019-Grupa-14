@@ -344,3 +344,88 @@ void chooseOption(char cityName[])
     fflush(stdin);                              //pojma nemam sta je ovo, ostalo od dejana
 
 }
+
+void inputQuizQuestions(){
+    FILE *fp=fopen("kviz.txt", "w");  // otvorimo datoteku za pitanja
+    char *question, *a1, *a2, *a3;  // varijable za pitanje i ponudjene odgovore
+    int i, ca;  // ca-tacan odgovor
+    if(fp!=NULL){
+        /*Unos pitanja sa ponudjenim odgovorima i tacan odgovor, zatim upis u datoteku*/
+        for(i=0; i<10; i++){
+            printf("Unesite pitanje: ");
+            question=inputString(); question=(char*)realloc(question, size*sizeof(char));
+            printf("1. ");
+            a1=inputString(); a1=(char*)realloc(a1, MAX*sizeof(char));
+            printf("2. ");
+            a2=inputString(); a2=(char*)realloc(a2, MAX*sizeof(char));
+            printf("3. ");
+            a3=inputString(); a3=(char*)realloc(a3, MAX*sizeof(char));
+            printf("Unesite redni broj tacnog odgovora: ");
+            ca=chooseOption2(1,3);
+            fprintf(fp, "%d) %s\n1. %s\n2. %s\n3. %s\n%d\n", i+1, question, a1, a2, a3, ca);
+            free(question); free(a1); free(a2); free(a3);
+        }
+    }
+    else printf("ERROR!");
+}
+
+void Help(){
+    printf("\n\n                              POMOC");
+    printf("\n -------------------------------------------------------------------------");
+    printf("\n >> Kviz zapocinjete pritiskom na taster enter.");
+    printf("\n >> Nakon sto ste pritisnuli enter, mozete zapoceti igranje kviza koji se sastoji");
+    printf("\n    od 10 pitanja. Svako pitanje ide jedno ispod drugog. Nakon svakog pitanja ");
+    printf("\n    imate ponudjene odgovore pod 1, 2 i 3. Moguce je unijeti samo jedan broj, tj.");
+    printf("\n    samo jedan odgovor jer za svako pitanje postoji jedinstven odgovor.");
+    printf("\n    Svako tacno pitanje nosi 1 bod. Ne postoje negativni bodovi.");
+    printf("\n    Kada se zavrsi kviz, odnosno kada zavrsite svih 10 pitanja dobicete ");
+    printf("\n    ukupan broj osvojenih bodova.");
+    printf("\n >> Srecno!\n");
+    printf("\n\n");
+}
+
+void Display(){
+     printf("\t\t________________________________________");
+     printf("\n\t\t\t  DOBRODOSLI ");
+     printf("\n\t\t\t      U ");
+     printf("\n\t\t\t    KVIZ ");
+     printf("\n\t\t________________________________________");
+     printf("\n\t\t > Pritisnite slovo P za pomoc ukoliko zelite da saznate pravila igre.");
+     printf("\n\t\t > Pritisnite enter za zapocinjanje kviza.");
+     printf("\n\t\t________________________________________\n\n");
+     char option;
+     option=toupper(getch());
+      if(option=='P')
+      {
+          Help();
+          getch();
+      }
+}
+
+void playQuiz(){
+    Display();  //prikaz pocetnog ekrana
+    printf("ZAPOCELI STE KVIZ\n\n");
+    FILE *fp=fopen("kviz.txt", "r");  // otvaranje fajla sa pitanjima
+    char *question=(char*)calloc(size, sizeof(char)), *a1=(char*)calloc(MAX, sizeof(char)), *a2=(char*)calloc(MAX, sizeof(char)), *a3=(char*)calloc(MAX, sizeof(char));
+    int in, ca, s=0;  // in - unos odgovora, ca - tacan odgovor, s - broj tacnih odgovora
+    if(fp!=NULL){
+        /*Iscitavanje pitanja i ponudjenih odgovora iz datoteke sa pitanjima
+        ispis na standardni izlaz i unos tacnog odgovora*/
+        while(!feof(fp)){
+            fscanf(fp, "%[^\n]\n", question);
+            fscanf(fp, "%[^\n]\n", a1);
+            fscanf(fp, "%[^\n]\n", a2);
+            fscanf(fp, "%[^\n]\n", a3);
+            fscanf(fp, "%d\n", &ca);
+            printf("\n%s\n%s\n%s\n%s\n\n", question, a1, a2, a3);
+            printf("Unesite odgovor: ");
+            in=chooseOption2(1,3);
+            if(in==ca) s++;  // ako je uneseni odgovor tacan povecava se broj tacnih odgovora
+        }
+        fclose(fp);
+    }
+    else printf("ERROR!");
+    printf("Broj tacnih odgovora je: %d.", s);
+    free(question); free(a1); free(a2); free(a3);
+    Sleep(5*1000);
+}
