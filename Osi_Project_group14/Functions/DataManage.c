@@ -96,7 +96,7 @@ int loadEvent(EVENT* eve, FILE* eventFile)
 void writeUser(USER* user,  FILE* userFile)  								//podrazumjevaju da su korisnici/dogadjaji konacno formirani
 {
     if(!user->userName[0]){return;}
-    fprintf(userFile, "%s %s %s %s\n", user->userID, user->userName, user->password, user->type);
+    fprintf(userFile, "%05d %s %s %s\n", atoi(user->userID), user->userName, user->password, user->type);
 }
 void writeEvent(EVENT* eve,  FILE* eventFile)
 {
@@ -297,11 +297,11 @@ int updateIndex(int id,int spacing,char* file)
         else if(atoi(arrDate[i].eventID)>id)                //u Events fajlu samo events koji dolaze poslije izbrisanog u fajlu(oni sa vecim id-em) mijenjaju svoju poziciju u fajlu, oni prije ne
         {
             arrDate[i].position-=spacing;                   //racuna se novi position na osnovu spacing-a
-            fprintf(indexFile,"%s %s %d\n",arrDate[i].key,arrDate[i].eventID,arrDate[i].position);
+            fprintf(indexFile,"%s %s %06d\n",arrDate[i].key,arrDate[i].eventID,arrDate[i].position);
         }
         else
         {
-            fprintf(indexFile,"%s %s %d\n",arrDate[i].key,arrDate[i].eventID,arrDate[i].position);
+            fprintf(indexFile,"%s %s %06d\n",arrDate[i].key,arrDate[i].eventID,arrDate[i].position);
         }
     }
     fclose(indexFile);
@@ -314,8 +314,8 @@ int removeEvent(char* eventId)
 
     if(deleteEvent(eventId,&spacing))
     {
-        updateIndex(atoi(eventId),spacing+2,"Data/Index_Category.txt");         //+2 na spacing zbog novog reda
-        updateIndex(atoi(eventId),spacing+2,"Data/Index_Datum.txt");
+        updateIndex(atoi(eventId),333+2,"Data/Index_Category.txt");         //+2 na spacing zbog novog reda
+        updateIndex(atoi(eventId),333+2,"Data/Index_Datum.txt");
     }
     else
     {
@@ -493,8 +493,14 @@ int loadUnregUser(UNREGUSER* unrUser,FILE* unregUserFile)
 {
     if(!feof(unregUserFile))
     {
-        return fscanf(unregUserFile,"%s %s %s %s %s",unrUser->base.userName,unrUser->base.password,
+        memset(unrUser->base.userName,0,20);
+        memset(unrUser->base.password,0,20);
+        memset(unrUser->email,0,20);
+        memset(unrUser->name,0,20);
+        memset(unrUser->surname,0,25);
+        fscanf(unregUserFile,"%s %s %s %s %s\n",unrUser->base.userName,unrUser->base.password,
                       unrUser->email,unrUser->name,unrUser->surname);
+        return 1;
     }
     return 0;
 }
@@ -505,83 +511,30 @@ void writeUnregUser(UNREGUSER* unrUser,FILE* unUserFile)
             unrUser->email,unrUser->name,unrUser->surname);
 }
 
-int deleteUnregUser(char* usrName)
-{
-    FILE* unUserFile;
-    UNREGUSER* first = 0;
-    UNREGUSER* curr = 0;
-    UNREGUSER* temp = 0;
-    UNREGUSER* prelast=0;           //da omoguci brisanje zadnjeg
+int deleteUnregUser(char* usrName){
     int found=0;
+    UNREGUSER unUser;
+    FILE* unregData;
+    FILE* newData=fopen("Data/tempData.txt","w");
 
-    if(!openUnregUserData(&unUserFile,"r+"))
-    {
-        return 0;
-    }
+    openUnregUserData(&unregData,"r");
+    allocUnregUser(&unUser);
 
-    while(!feof(unUserFile))
-    {
-        if(first==0)
-        {
-            first=(UNREGUSER*)calloc(1,sizeof(UNREGUSER));
-            allocUnregUser(first);
-            loadUnregUser(first,unUserFile);
-            curr=first;
-        }
-        if(!strcmp(usrName,curr->base.userName))
-        {
+    while(loadUnregUser(&unUser,unregData)){
+        if(!strcmp(unUser.base.userName,usrName)){
             found=1;
-            freeUnregUser(curr);
-            allocUnregUser(curr);
-            if(!loadUnregUser(curr,unUserFile))
-            {
-                prelast->next=0;
-            }
         }
-        else
-        {
-            curr->next=(UNREGUSER*)calloc(1,sizeof(UNREGUSER));
-            allocUnregUser(curr->next);
-            loadUnregUser(curr->next,unUserFile);
-            prelast=curr;
-            curr=curr->next;
+        else{
+            writeUnregUser(&unUser,newData);
         }
     }
-
-    curr=first;
-    if(!first->next && found)
-    {
-        openUnregUserData(&unUserFile,"w+");
-        fprintf(unUserFile,"");
-        fclose(unUserFile);
-        return 1;
-    }
-    if(found)
-    {
-        fclose(unUserFile);
-        openUnregUserData(&unUserFile,"w+");
-        while(curr)
-        {
-            temp=curr->next;
-            writeUnregUser(curr,unUserFile);
-            freeUnregUser(curr);
-            free(curr);
-            curr=temp;
-        }
-    }
-    else
-    {
-        while(curr)
-        {
-            temp=curr->next;
-            freeUnregUser(curr);
-            free(curr);
-            curr=temp;
-        }
-    }
-    fclose(unUserFile);
+    fclose(unregData);
+    fclose(newData);
+    remove("Data/Korisnicki_zahtjevi.txt");
+    rename("Data/tempData.txt","Data/Korisnicki_zahtjevi.txt");
     return found;
 }
+
 
 int unregUserExist(char* username)                          //pomocna, ako negdje zatreba
 {
@@ -684,15 +637,24 @@ int deleteCategory(char* categoryName)
     return 1;
 }
 
+int loadComment(COMMENT* comm,FILE* commFile){
+    if(!feof(commFile)){
+        return (fscanf(commFile,"%s,%[^,],%[^\n]",comm->comEventID,comm->comUsername,comm->commentText));
+    }
+    return 0;
+}
+
 int insertComment(COMMENT* comm){                                       //upisuje komentar u Komentari.txt da su svi grupisani
     int found=0;
     COMMENT temp;
     createComment(&temp);
-    FILE* newComments=fopen("newComments.txt","w");                     //temp fajl, koji ce sadrzati novi komentar i sve prethodne
+    FILE* newComments=fopen("Data/newComments.txt","w");                     //temp fajl, koji ce sadrzati novi komentar i sve prethodne
     FILE* comments;
 
-    if(!openCommentData(&comments,"r+")){return 0;}
-    while(loadComment(&temp,comments)){
+    if(!openCommentData(&comments,"r+"))
+    {return 0;}
+    while(loadComment(&temp,comments))
+        {
         if(!strcmp(temp.comEventID,comm->comEventID) && !found){        //kada se naidje na komentar sa istim event id-om(i nije vec upisan),
             found=1;                                                        //prvo se upisuje novi pa onda svi stari
             writeComment(comm,newComments);
@@ -707,17 +669,18 @@ int insertComment(COMMENT* comm){                                       //upisuj
     }
     fclose(comments);
     fclose(newComments);
-    if(!remove("Komentari.txt") && !rename("newComments.txt","Komentari.txt")){         //brise se stari a preimenuje se novi fajl
-        freeComment(&comm);
+    if(!remove("Data/Komentari.txt") && !rename("Data/newComments.txt","Data/Komentari.txt")){         //brise se stari a preimenuje se novi fajl
+        freeComment(comm);
         return 1;
     }
-    freeComment(&comm);
+    freeComment(comm);
     return 0;
 }
 
+
 int deleteUnApprovedComment(char* eventID, char* username){                         //slicna prica kao i u insertu, samo se u novi fajl ne upisuje komentar sa istim
     int found=0;                                                                                //eventid-em i username-om
-    FILE* newComments=fopen("tempComments.txt","w");
+    FILE* newComments=fopen("Data/tempComments.txt","w");
     FILE* comments;
     COMMENT comm;
     createComment(&comm);
@@ -733,12 +696,12 @@ int deleteUnApprovedComment(char* eventID, char* username){                     
     fclose(newComments);
     fclose(comments);
     if(found){
-        remove("Komentar_za_Odobravanje.txt");
-        rename("tempComments.txt","Komentar_za_Odobravanje.txt");
+        remove("Data/Komentar_za_Odobravanje.txt");
+        rename("Data/tempComments.txt","Data/Komentar_za_Odobravanje.txt");
         freeComment(&comm);
         return 1;
     }else if(!found){
-        remove("tempComments.txt");
+        remove("Data/tempComments.txt");
         freeComment(&comm);
         return 0;
     }
@@ -811,7 +774,6 @@ void deleteComment(int id, char* userName, char* comment)
 }
 
 
-
 char* inputString(){
     int i=0, u=20;
     char c, *pom=(char*)calloc(u, sizeof(char));
@@ -874,7 +836,7 @@ void addCategory(){
 }
 
 char** readCategories(int *n){
-    FILE *fp=fopen("category.txt", "r");  // otvaranje datoteke
+    FILE *fp=fopen("Data/Kategorije.txt", "r");  // otvaranje datoteke
     int u=10;  // u --> pomocna promjenljiva koja sluzi za realokaciju memorije
     char** cat=(char**)calloc(u, sizeof(char*)), temp[30]={0};  // cat --> niz stringova; temp --> pomocna promjenljiva
     if(fp!=NULL){
@@ -968,7 +930,6 @@ void inputEventData(EVENT *data){
     free(temp);
 
     inputCategory(data);  // pozivanje funkcije za unos kategorije
-    strcpy(data->user, "NEKIUSER"); //aaaaaaaaaaaaaaaaaaaaaaa
     data->finished=(!isFinished(data->date)) ? 0 : 1;
 }
 
@@ -1023,24 +984,26 @@ void updateIndex3(int index){
     }
 }
 
-void addEvent(){
+void addEvent(char* cityName, char* userName){
     FILE *fp;
     openEventData(&fp, "r+");
     int index;
     char *temp;
     EVENT data;
     createEvent(&data);
+    newPage(cityName);
+    strcpy(data.user, userName);
     inputEventData(&data);  // unesemo podatke o dogadjaju
     if(!isEventValid(data.date)) {  // ako nije moguce dodati dogadjaj ispisemo poruku i izadjemo
         printf("Dogadjaj se desava za vise od 5 godina i nije ga moguce dodati.\n");
         freeEvent(&data);
         Sleep(5*1000);
-        newPage("Banjaluka");
         fclose(fp);
+        return;
     }
     else{
         if(fp!=NULL){
-            newPage("Banjaluka");  // ocistimo ekran
+            newPage(cityName);  // ocistimo ekran
             printf("Naziv dogadjaja: %s\n", data.headline);
             printf("Opis dogadjaja: %s\n", data.description);
             printf("Datum odrzavanja: %s\n", data.date);

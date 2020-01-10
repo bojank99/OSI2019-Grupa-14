@@ -12,6 +12,37 @@ void writeCity(FILE *fp)
     fputs("1\n",fp);
     fputs(cityName,fp);
 
+    FILE *firstFile;
+
+    firstFile = fopen("Data/Events.txt","w");
+    fclose(firstFile);
+
+    firstFile = fopen("Data/Index_Category.txt","w");
+    fclose(firstFile);
+
+    firstFile = fopen("Data/Index_Datum.txt","w");
+    fclose(firstFile);
+
+    firstFile = fopen("Data/Kategorije.txt","w");
+    fputs("Izlozbe\nKoncerti\nPromocije\n",firstFile);
+    fclose(firstFile);
+
+    firstFile = fopen("Data/Komentar_za_Odobravanje.txt","w");
+    fclose(firstFile);
+
+    firstFile = fopen("Data/Komentari.txt","w");
+    fclose(firstFile);
+
+    firstFile = fopen("Data/Korisnicki_zahtjevi.txt","w");
+    fclose(firstFile);
+
+    firstFile = fopen("Data/Users.txt","w");
+    fputs("00001\n00001 Admin admin admin\n",firstFile);
+    fclose(firstFile);
+
+    printf("\nNapravite kviz\n");
+    inputQuizQuestions();
+
 }
 
 
@@ -65,7 +96,6 @@ void deleteCity()
     remove("Data/Users.txt");
 
     newFile1=fopen("Data/Events.txt","w");
-    fputc('0',newFile1);
     fclose(newFile1);
 
     newFile1=fopen("Data/Ime_Grada.txt","w");
@@ -79,6 +109,7 @@ void deleteCity()
     fclose(newFile1);
 
     newFile1=fopen("Data/Kategorije.txt","w");
+    fputs("Izlozbe\nKoncerti\nPromocije\n",newFile1);
     fclose(newFile1);
 
     newFile1=fopen("Data/Komentar_za_Odobravanje.txt","w");
@@ -91,7 +122,7 @@ void deleteCity()
     fclose(newFile1);
 
     newFile1=fopen("Data/Users.txt","w");
-    fputc('0',newFile1);
+    fputs("00001\n00001 Admin admin admin\n",newFile1);
     fclose(newFile1);
 }
 

@@ -6,7 +6,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 // u headeru je vecina objasnjenja za funkcije
-
+#define size 200
+#define MAX 30
 
 USER temp;
 
@@ -81,6 +82,7 @@ void showOptions(char* choice)
     printf("4) Izadji\n");
     printf("Unos: ");
     scanf("%c",choice);
+    fflush(stdin);
 }
 
 int checkUserData(char* usrn,char* passw, char* type)
@@ -335,7 +337,7 @@ void chooseOption(char cityName[])
                 showMainMenu(cityName,"guest","Gost1");
             };
         break;
-        case '4': return;
+        case '4': exit(0);
         default:
             break;
         }
@@ -347,7 +349,7 @@ void chooseOption(char cityName[])
 
 
 void inputQuizQuestions(){
-    FILE *fp=fopen("kviz.txt", "w");  // otvorimo datoteku za pitanja
+    FILE *fp=fopen("Data/Kviz.txt", "w");  // otvorimo datoteku za pitanja
     char *question, *a1, *a2, *a3;  // varijable za pitanje i ponudjene odgovore
     int i, ca;  // ca-tacan odgovor
     if(fp!=NULL){
@@ -366,8 +368,10 @@ void inputQuizQuestions(){
             fprintf(fp, "%d) %s\n1. %s\n2. %s\n3. %s\n%d\n", i+1, question, a1, a2, a3, ca);
             free(question); free(a1); free(a2); free(a3);
         }
+        fclose(fp);
     }
     else printf("ERROR!");
+
 }
 
 void Help(){
@@ -406,7 +410,7 @@ void Display(){
 void playQuiz(){
     Display();  //prikaz pocetnog ekrana
     printf("ZAPOCELI STE KVIZ\n\n");
-    FILE *fp=fopen("kviz.txt", "r");  // otvaranje fajla sa pitanjima
+    FILE *fp=fopen("Data/Kviz.txt", "r");  // otvaranje fajla sa pitanjima
     char *question=(char*)calloc(size, sizeof(char)), *a1=(char*)calloc(MAX, sizeof(char)), *a2=(char*)calloc(MAX, sizeof(char)), *a3=(char*)calloc(MAX, sizeof(char));
     int in, ca, s=0;  // in - unos odgovora, ca - tacan odgovor, s - broj tacnih odgovora
     if(fp!=NULL){

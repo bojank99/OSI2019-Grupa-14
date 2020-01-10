@@ -1,6 +1,7 @@
 #pragma once
 #include <stdio.h>
 #include "Show.h"
+#include <ctype.h>
 
 
 typedef struct user {
@@ -74,7 +75,7 @@ int loadComment(COMMENT*,FILE*);                        //ucitava jedan komentar
 int approveComment(char*,char*);                        //odobrava komentar sa prosljedjenim eventID i username-om korisnika(mozda bi bilo blje da svaki neodobren ima svoj id)
 int insertComment(COMMENT*);                            //upisuje komentar u Komentare tako da su svi komentari sa istim eventID grupisani
 int deleteUnApprovedComment(char*,char*);               //brise komentar iz fajla neodobrenih komentara
-void approveAllComments();                              //sve komentare iz fajla odobrava i upisuje u 'Komentari.txt'
+int approveAllComments();                              //sve komentare iz fajla odobrava i upisuje u 'Komentari.txt'
 void writeComment(COMMENT*,FILE*);                      //samo formatiran upis komentara u fajl
 
 int removeEvent(char*);                 //brise iz fajla i update-uje indexe(ovu treba koristiti iz menija)
@@ -124,8 +125,6 @@ int deleteCategory(char*);
 //kako bi se isto izbrisalo iz datoteke
 void deleteComment(int, char*, char*);
 
-
-
 //unos stringa
 char* inputString();
 //provjera da li ima slovo u stringu
@@ -154,7 +153,7 @@ void everyIndexPosition(INDEX *, int, const char*);
 //promjena pozicija u glavnoj datoteci zvog povecavanja broja cifra indeksa koji je prvi upisan u datoteku
 void updateIndex3(int);
 //funckija za dodavanje dogadjaja
-void addEvent();
+void addEvent(char*,char*);
 //pronalazak pozicije dogadjaja za ID-jem eventID u jednoj od indeksnih datoteka
 int findPosition(char *);
 //funkcija za promjenu podataka o dogadjaju koji se salje kao parametar
