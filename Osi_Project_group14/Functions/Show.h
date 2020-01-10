@@ -48,5 +48,16 @@ void readPassword(char*);
 
 void faq();					//FAQ (mozda, da ima kao opcija)
 
+// funkcija za unos pitanja kviza
+void inputQuizQuestions();
+
+// funkcija koja objasnjava kako se igra kviz
+void Help();
+
+//funkcija za pocetni ekran pri igranju kviza i pokretanje kviza
+void Display();
+
+//funckija za igranje kviza
+void playQuiz();
 
 #endif
