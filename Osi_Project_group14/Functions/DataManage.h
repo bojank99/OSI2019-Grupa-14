@@ -1,6 +1,7 @@
 #pragma once
 #include <stdio.h>
 #include "Show.h"
+#include <ctype.h>
 
 
 typedef struct user {
@@ -152,7 +153,7 @@ void everyIndexPosition(INDEX *, int, const char*);
 //promjena pozicija u glavnoj datoteci zvog povecavanja broja cifra indeksa koji je prvi upisan u datoteku
 void updateIndex3(int);
 //funckija za dodavanje dogadjaja
-void addEvent();
+void addEvent(char*,char*);
 //pronalazak pozicije dogadjaja za ID-jem eventID u jednoj od indeksnih datoteka
 int findPosition(char *);
 //funkcija za promjenu podataka o dogadjaju koji se salje kao parametar

@@ -29,7 +29,7 @@
 	<stdlib.h>
 	<string.h>
 
-1578657763 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\datamanage.c
+1578671985 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\datamanage.c
 	"DataManage.h"
 	<stdlib.h>
 	<string.h>
@@ -37,27 +37,28 @@
 	<time.h>
 	<windows.h>
 
-1578649105 c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\datamanage.h
+1578667753 c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\datamanage.h
 	<stdio.h>
 	"Show.h"
+	<ctype.h>
 
-1578648838 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\functions.c
+1578664209 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\functions.c
 	"functions.h"
 
 1578431960 c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\functions.h
 	<stdio.h>
 	<stdlib.h>
 
-1578658592 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\show.c
+1578673814 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\show.c
 	<string.h>
 	<conio.h>
 	"DataManage.h"
 	"functions.h"
 	"MainMenu.h"
 
-1578229723 c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\show.h
+1578659435 c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\show.h
 
-1578658861 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\main.c
+1578664209 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\main.c
 	<stdio.h>
 	<stdlib.h>
 	"Functions/functions.h"
@@ -98,8 +99,10 @@
 	"DataManage.h"
 	<string.h>
 
-1578659204 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\mainmenu.c
+1578673793 source:c:\users\jovicic-3\desktop\osi_project\osi_project_group14\functions\mainmenu.c
 	"MainMenu.h"
+	<stdlib.h>
+	<conio.h>
 
 1578566345 source:c:\users\dell.desktop-ra8skkt.000\desktop\osi2019-grupa-14\osi_project_group14\functions\mainmenu.c
 	"MainMenu.h"

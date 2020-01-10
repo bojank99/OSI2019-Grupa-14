@@ -297,11 +297,11 @@ int updateIndex(int id,int spacing,char* file)
         else if(atoi(arrDate[i].eventID)>id)                //u Events fajlu samo events koji dolaze poslije izbrisanog u fajlu(oni sa vecim id-em) mijenjaju svoju poziciju u fajlu, oni prije ne
         {
             arrDate[i].position-=spacing;                   //racuna se novi position na osnovu spacing-a
-            fprintf(indexFile,"%s %s %d\n",arrDate[i].key,arrDate[i].eventID,arrDate[i].position);
+            fprintf(indexFile,"%s %s %06d\n",arrDate[i].key,arrDate[i].eventID,arrDate[i].position);
         }
         else
         {
-            fprintf(indexFile,"%s %s %d\n",arrDate[i].key,arrDate[i].eventID,arrDate[i].position);
+            fprintf(indexFile,"%s %s %06d\n",arrDate[i].key,arrDate[i].eventID,arrDate[i].position);
         }
     }
     fclose(indexFile);
@@ -314,8 +314,8 @@ int removeEvent(char* eventId)
 
     if(deleteEvent(eventId,&spacing))
     {
-        updateIndex(atoi(eventId),spacing+2,"Data/Index_Category.txt");         //+2 na spacing zbog novog reda
-        updateIndex(atoi(eventId),spacing+2,"Data/Index_Datum.txt");
+        updateIndex(atoi(eventId),333+2,"Data/Index_Category.txt");         //+2 na spacing zbog novog reda
+        updateIndex(atoi(eventId),333+2,"Data/Index_Datum.txt");
     }
     else
     {
@@ -701,7 +701,7 @@ int deleteUnApprovedComment(char* eventID, char* username){                     
         freeComment(&comm);
         return 1;
     }else if(!found){
-        remove("tempComments.txt");
+        remove("Data/tempComments.txt");
         freeComment(&comm);
         return 0;
     }
@@ -930,7 +930,6 @@ void inputEventData(EVENT *data){
     free(temp);
 
     inputCategory(data);  // pozivanje funkcije za unos kategorije
-    strcpy(data->user, "NEKIUSER"); //aaaaaaaaaaaaaaaaaaaaaaa
     data->finished=(!isFinished(data->date)) ? 0 : 1;
 }
 
@@ -985,13 +984,15 @@ void updateIndex3(int index){
     }
 }
 
-void addEvent(){
+void addEvent(char* cityName, char* userName){
     FILE *fp;
     openEventData(&fp, "r+");
     int index;
     char *temp;
     EVENT data;
     createEvent(&data);
+    newPage(cityName);
+    strcpy(data.user, userName);
     inputEventData(&data);  // unesemo podatke o dogadjaju
     if(!isEventValid(data.date)) {  // ako nije moguce dodati dogadjaj ispisemo poruku i izadjemo
         printf("Dogadjaj se desava za vise od 5 godina i nije ga moguce dodati.\n");
@@ -1002,7 +1003,7 @@ void addEvent(){
     }
     else{
         if(fp!=NULL){
-            newPage("Banjaluka");  // ocistimo ekran
+            newPage(cityName);  // ocistimo ekran
             printf("Naziv dogadjaja: %s\n", data.headline);
             printf("Opis dogadjaja: %s\n", data.description);
             printf("Datum odrzavanja: %s\n", data.date);
