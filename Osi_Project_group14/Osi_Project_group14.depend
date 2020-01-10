@@ -190,3 +190,46 @@
 	<stdlib.h>
 	"Functions/functions.h"
 
+1578689871 source:c:\users\jovicic-3\desktop\osi2019-grupa-14\osi_project_group14\functions\datamanage.c
+	"DataManage.h"
+	<stdlib.h>
+	<string.h>
+	<ctype.h>
+	<time.h>
+	<windows.h>
+
+1578689871 c:\users\jovicic-3\desktop\osi2019-grupa-14\osi_project_group14\functions\datamanage.h
+	<stdio.h>
+	"Show.h"
+	<ctype.h>
+
+1578689871 c:\users\jovicic-3\desktop\osi2019-grupa-14\osi_project_group14\functions\show.h
+
+1578689988 source:c:\users\jovicic-3\desktop\osi2019-grupa-14\osi_project_group14\functions\functions.c
+	"functions.h"
+
+1578689871 c:\users\jovicic-3\desktop\osi2019-grupa-14\osi_project_group14\functions\functions.h
+	<stdio.h>
+	<stdlib.h>
+
+1578689871 source:c:\users\jovicic-3\desktop\osi2019-grupa-14\osi_project_group14\functions\mainmenu.c
+	"MainMenu.h"
+	<stdlib.h>
+	<conio.h>
+
+1578689871 c:\users\jovicic-3\desktop\osi2019-grupa-14\osi_project_group14\functions\mainmenu.h
+	"DataManage.h"
+	<string.h>
+
+1578689871 source:c:\users\jovicic-3\desktop\osi2019-grupa-14\osi_project_group14\functions\show.c
+	<string.h>
+	<conio.h>
+	"DataManage.h"
+	"functions.h"
+	"MainMenu.h"
+
+1578689871 source:c:\users\jovicic-3\desktop\osi2019-grupa-14\osi_project_group14\main.c
+	<stdio.h>
+	<stdlib.h>
+	"Functions/functions.h"
+

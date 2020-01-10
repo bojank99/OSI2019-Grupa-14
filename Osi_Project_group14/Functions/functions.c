@@ -27,7 +27,7 @@ void writeCity(FILE *fp)
     fputs("Izlozbe\nKoncerti\nPromocije\n",firstFile);
     fclose(firstFile);
 
-    firstFile = fopen("Data/Komentar_za_Odobravanje.txt","w");
+    firstFile = fopen("Data/Komentari_za_Odobravanje.txt","w");
     fclose(firstFile);
 
     firstFile = fopen("Data/Komentari.txt","w");
